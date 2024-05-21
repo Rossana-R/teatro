@@ -1,0 +1,63 @@
+
+
+
+<div class="p-5 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-y-4 lg:gap-y-0 lg:gap-x-5">
+    <div class="w-full col-span-2 flex justify-end pb-3">
+        <a href="/users" class="px-6 py-2 rounded-md bg-amber-400 hover:bg-amber-500 font-bold">volver</a>
+
+    </div>
+
+    <div class="grid place-items-center">
+        <h2 class="text-3xl font-light text-gray-900">{{evt.event_name}}</h2>
+        <h3 class="text-md text-gray-600 mb-2">{{evt.fullname}} - {{evt.ci}}</h3>
+        
+        <div class="flex justify-center w-full">
+            <a href="/event/{{evt._id}}/update" class="bg-sky-400 hover:bg-sky-600 px-5 py-2 rounded-sm">actualizar</a>
+            <a href="/event/{{evt._id}}/admin" class="bg-cyan-400 hover:bg-cyan-600 px-5 py-2 rounded-sm">admin</a>
+            <a href="/event/{{evt._id}}/aporte" class="bg-emerald-400 hover:bg-indigo-600 px-5 py-2 rounded-sm">aportar</a>
+        </div>
+    </div>
+
+    <div class="mt-5 rounded-xl bg-white p-5 grid place-items-center">
+        <h3 class="text-xl text-gray-600 font-bold">
+            Estado del evento
+            <span class="text-xs font-extrabold text-gray-950">({{evt.admin_status}})</span>
+        </h3>
+
+        <div class="flex justify-between items-center gap-3 w-full">
+            <a href="/event/{{evt._id}}/status?status=CANCELADO" class="py-1 flex-1 rounded-md text-center text-sm font-bold bg-slate-400 hover:bg-slate-500">cancelar</a>
+            <a href="/event/{{evt._id}}/status?status=APROBADO" class="py-1 flex-1 rounded-md text-center text-sm font-bold bg-sky-400 hover:bg-sky-500">aprobar</a>
+            <a href="/event/{{evt._id}}/status?status=REPROGRAMADO" class="py-1 flex-1 rounded-md text-center text-sm font-bold bg-amber-400 hover:bg-amber-500">reprogramar</a>
+            <a href="/event/{{evt._id}}/status?status=FINALIZADO" class="py-1 flex-1 rounded-md text-center text-sm font-bold bg-emerald-400 hover:bg-emerald-500">finalizar</a>
+        </div>
+    </div>
+
+    <div class="mt-5 rounded-xl bg-white p-5 grid place-items-center">
+        <h3 class="text-xl text-gray-600 font-bold">Fecha y hora</h3>
+        <p class="text-md text-gray-600">Fecha: <span class="font-bold">{{evt.event_datetime_date}}</span></p>
+        <p class="text-md text-gray-600">Inicio: <span class="font-bold">{{evt.admin_datetime_start}}</span></p>
+        <p class="text-md text-gray-600">Salida: <span class="font-bold">{{evt.admin_datetime_end}}</span></p>
+    </div>
+
+    <div class="mt-5 rounded-xl bg-white p-5 grid place-items-center">
+        <h3 class="text-xl text-gray-600 font-bold">Áreas reservadas</h3>
+        <div class="flex gap-4">
+            {{#if evt.event_area.room }}
+                <div class="w-24 text-xs py-1 text-center bg-emerald-500 text-white font-bold rounded-md">sala</div>
+            {{else}}
+                <div class="w-24 text-xs py-1 text-center bg-gray-500 text-black font-light rounded-md">sala</div>
+            {{/if}}
+            {{#if evt.event_area.coffee_bar }}
+                <div class="w-24 text-xs py-1 text-center bg-emerald-500 text-white font-bold rounded-md">cafe/bar</div>
+            {{else}}
+                <div class="w-24 text-xs py-1 text-center bg-gray-500 text-black font-light rounded-md">cafe/bar</div>
+            {{/if}}
+            {{#if evt.event_area.vip }}
+                <div class="w-24 text-xs py-1 text-center bg-emerald-500 text-white font-bold rounded-md">vip</div>
+            {{else}}
+                <div class="w-24 text-xs py-1 text-center bg-gray-500 text-black font-light rounded-md">vip</div>
+            {{/if}}
+        </div>
+    </div>
+
+</div>

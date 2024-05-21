@@ -1,0 +1,121 @@
+
+<div class="flex flex-col px-10 gap-2">
+
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {{#if eventToDay}}
+            <div class="min-h-[auto] bg-gray-50 rounded-[20px] px-5 py-3">
+                <h2 class="text-gray-800 font-black text-md text-center">Tienes eventos hoy</h2>
+                <p class="text-xl font-extrabold text-gray-700 text-center">{{eventToDay.event_name}}</p>
+                <p class="text-gray-500 text-center font-light text-lg">{{eventToDay.fullname}}</p>
+                <p class="text-sm text-gray-500 text-center">phone: <span class="font-black">{{eventToDay.phone}}</span></p>
+                <p class="text-sm text-gray-500 text-center">correo: <span class="font-black">{{eventToDay.email}}</span></p>
+                <div class="flex justify-center items-center gap-5 my-3">
+                    <a href="/event/{{eventToDay._id}}" class="px-5 py-1 font-bold text-sm rounded-md bg-sky-400 hover:bg-sky-600">ver evento</a>
+                    <a href="/event/{{eventToDay._id}}/status?status=FINALIZADO" class="px-5 py-1 font-bold text-sm rounded-md bg-emerald-400 hover:bg-emerald-600">finalizar</a>
+                </div>
+            </div>
+        {{else}}
+            <div class="min-h-[auto] bg-gray-50 rounded-[20px] px-5 py-3 flex flex-col justify-center items-center gap-5">
+                <h2 class="text-gray-800 font-black text-md text-center">Hoy no tienes eventos</h2>
+                <a href="/events" class="px-5 py-1 font-bold text-sm rounded-md bg-sky-400 hover:bg-sky-600">ver eventos</a>
+            </div>
+        {{/if}}
+
+        {{#if eventToMorrow}}
+            <div class="min-h-[auto] bg-gray-50 rounded-[20px] px-5 py-3">
+                <h2 class="text-gray-800 font-black text-md text-center">Mañana tienes eventos</h2>
+                <p class="text-xl font-extrabold text-gray-700 text-center">{{eventToMorrow.event_name}}</p>
+                <p class="text-sm text-gray-500 text-center"><span class="font-black">{{eventToMorrow.fullname}}</span></p>
+                <p class="text-sm text-gray-500 text-center">phone: <span class="font-black">{{eventToMorrow.phone}}</span></p>
+                <p class="text-sm text-gray-500 text-center">correo: <span class="font-black">{{eventToMorrow.email}}</span></p>
+                <div class="flex justify-center items-center gap-5 my-3">
+                    <a href="/event/{{eventToMorrow._id}}" class="px-5 py-1 font-bold text-sm rounded-md bg-sky-400 hover:bg-sky-600">ver evento</a>
+                    <a href="//event/{{eventToMorrow._id}}/status?status=FINALIZADO" class="px-5 py-1 font-bold text-sm rounded-md bg-emerald-400 hover:bg-emerald-600">finalizar</a>
+                </div>
+            </div>
+        {{else}}
+            <div class="min-h-[auto] bg-gray-50 rounded-[20px] px-5 py-3 flex flex-col justify-center items-center gap-5">
+                <h2 class="text-gray-800 font-black text-md text-center">Mañana no tienes eventos</h2>
+                <a href="/events" class="px-5 py-1 font-bold text-sm rounded-md bg-sky-400 hover:bg-sky-600">ver eventos</a>
+            </div>
+        {{/if}}
+
+        <div class="h-[auto] rounded-[20px] py-3 grid gap-1 grid-cols-2">
+            {{#each eventsCounts}}
+                <div class="w-full h-full py-2 rounded-lg {{this.cl}} flex justify-center items-center flex-col">
+                    <span class="w-full font-mono text-gray-700 text-lg text-center">{{this.type}}</span>
+                    <span class="font-black text-3xl font-gray-600">{{this.count}}</span>
+                </div>
+            {{/each}}
+        </div>
+
+    </section>
+
+    <section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-5">
+
+        {{#each eventsDay}}
+            {{#if this}}
+                <div class="rounded-[20px] p-3 bg-white relative flex flex-col justify-center items-center">
+                    <p class="text-sm text-gray-500 font-bold z-10">{{this.event_name}}</p>
+                    <a href="/events" class="text-md lg:text-md font-extrabold text-gray-600 z-10">{{admin_date}}</a>
+                </div>
+            {{else}}
+                <div class="rounded-[20px] p-3 bg-gray-500 relative flex flex-col justify-center items-center">
+                    <p class="text-sm text-gray-300 font-bold z-10">No hay evento</p>
+                    <span class="text-md lg:text-md font-extrabold text-gray-400 z-10"></span>
+                </div>
+            {{/if}}
+        {{/each}}
+    </section>
+
+    <section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+        <div class="rounded-[20px] p-3 bg-white relative flex flex-col justify-between">
+            <img class="w-11 absolute lg:w-20 right-0 top-0" src="/ico/money.svg" />
+
+            <p class="text-sm text-gray-500 font-bold z-10">administración</p>
+            <p class="text-xl lg:text-4xl font-extrabold text-gray-800 z-10">bs 00.00</p>
+            <p class="text-md lg:text-md font-extrabold text-gray-600 z-10">$ 00.00</p>
+            <a href="" class="cursor-not-allowed w-[auto] rounded-[20px] bg-indigo-400 hover:bg-indigo-500 px-5 py-1 font-bold text-white">ver movimientos</a>
+        </div>
+
+        <div class="rounded-[20px] p-3 bg-white relative flex flex-col justify-between">
+            <img class="w-11 absolute lg:w-20 right-0 top-0" src="/ico/money.svg" />
+
+            <p class="text-sm text-gray-500 font-bold z-10">ingresos</p>
+            <p class="text-4xl font-extrabold text-gray-800 z-10">12</p>
+            <a href="" class="cursor-not-allowed w-[auto] rounded-[20px] bg-indigo-400 hover:bg-indigo-500 px-5 py-1 font-bold text-white">ver ingresos</a>
+        </div>
+
+        <div class="rounded-[20px] p-3 bg-white relative flex flex-col justify-between">
+            <img class="w-11 absolute lg:w-20 right-0 top-0" src="/ico/money.svg" />
+
+            <p class="text-sm text-gray-500 font-bold z-10">egresos</p>
+            <p class="text-4xl font-extrabold text-gray-800 z-10">{{userCount}}</p>
+            <a href="" class="cursor-not-allowed w-[auto] rounded-[20px] bg-indigo-400 hover:bg-indigo-500 px-5 py-1 font-bold text-white">ver egresos</a>
+        </div>
+    </section>
+
+
+    <section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+        <div class="rounded-[20px] p-3 bg-white relative">
+            <img class="w-11 absolute lg:w-20 right-0 top-0 lg:top-7 lg:bottom-0" src="/ico/user-sheell.svg" />
+
+            <p class="text-sm text-gray-500 font-bold z-10">usuarios totales</p>
+            <p class="text-4xl font-extrabold text-gray-800 z-10">{{userCount}}</p>
+            <a href="/users" class="rounded-[20px] bg-indigo-400 hover:bg-indigo-500 px-5 py-1 font-bold text-white">ver usuarios</a>
+        </div>
+
+        <div class="rounded-[20px] p-3 bg-white relative">
+            <img class="w-11 absolute lg:w-20 right-0 top-0 lg:top-7 lg:bottom-0" src="/ico/confety.svg" />
+
+            <p class="text-sm text-gray-500 font-bold z-10">eventos totales</p>
+            <p class="text-4xl font-extrabold text-gray-800 z-10">{{eventCount}}</p>
+            <a href="" class="cursor-not-allowed rounded-[20px] bg-indigo-400 hover:bg-indigo-500 px-5 py-1 font-bold text-white">ver eventos</a>
+        </div>
+
+
+    </section>
+
+</div>

@@ -1,2 +1,13 @@
-node_modules
-dist
+node_modules/
+dist/api/
+dist/config/
+dist/app.js
+dist/express.js
+dist/constant.js
+dist/controllers/
+dist/middleware/
+dist/model/
+dist/routes/
+dist/type/
+dist/utils/
+.env
