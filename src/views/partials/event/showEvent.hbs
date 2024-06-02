@@ -1,0 +1,108 @@
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 card mx-auto">
+            <div class="card-body">
+                <h4 class="">Fecha y hora:</h4>
+                <table class="table table-sm table-striped">
+                    <tbody>
+                        <tr>
+                            <td>Inicio</td>
+                            <td>{{eventData.admin_datetime_start}}</td>
+                        </tr>
+                        <tr>
+                            <td>Salida</td>
+                            <td>{{eventData.admin_datetime_end}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 class="mt-5">Datos responsable:</h4>
+                <table class="table table-sm table-striped">
+                    <tbody>
+                        <tr>
+                            <td>ID</td>
+                            <td>{{eventData._id}}</td>
+                        </tr>
+                        <tr>
+                            <td>Nombre completo</td>
+                            <td>{{eventData.fullname}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cédula</td>
+                            <td>{{eventData.ci}}</td>
+                        </tr>
+                        <tr>
+                            <td>Correo</td>
+                            <td>{{eventData.email}}</td>
+                        </tr>
+                        <tr>
+                            <td>Teléfono</td>
+                            <td>{{eventData.phone}}</td>
+                        </tr>
+                        <tr>
+                            <td>Dirección</td>
+                            <td>{{eventData.address}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 class="mt-5">Datos evento:</h4>
+                <table class="table table-sm table-striped">
+                    <tbody>
+                        <tr>
+                            <td>Nombre</td>
+                            <td>{{eventData.event_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Caracter</td>
+                            <td>{{eventData.event_character}}</td>
+                        </tr>
+                        <tr>
+                            <td>Tipo</td>
+                            <td>{{eventData.event_type}}</td>
+                        </tr>
+                        <tr>
+                            <td>Entrada paga</td>
+                            <td>{{eventData.event_intro}}</td>
+                        </tr>
+                        <tr>
+                            <td>Costo <span class="text-muted">(en caso de tenerlo)</span></td>
+                            <td>{{eventData.event_cost}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cantidad de personas</td>
+                            <td>{{eventData.event_quantity_people}}</td>
+                        </tr>
+                        <tr>
+                            <td>Tipo de pago</td>
+                            <td>{{eventData.event_character}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 class="mt-5">Datos administración:</h4>
+                <table class="table table-sm table-striped">
+                    <tbody>
+                        <tr>
+                            <td>Codigo de reservación</td>
+                            <td>{{eventData.admin_code}}</td>
+                        </tr>
+                        <tr>
+                            <td>Estado</td>
+                            <td>{{eventData.admin_status}}</td>
+                        </tr>
+                        <tr>
+                            <td>Fecha</td>
+                            <td>{{eventData.event_datetime_date}}</td>
+                        </tr>
+                        <tr>
+                            <td>Observación</td>
+                            <td>{{eventData.admin_observation}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

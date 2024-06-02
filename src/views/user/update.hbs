@@ -1,0 +1,43 @@
+
+<div class="row">
+    <div class="col-10">.</div>
+    <div class="col-2">
+        <a href="/users" class="bg-primary px-3 py-1 rounded">
+            <i class="bi bi-box-arrow-left"></i>
+            volver
+        </a>
+    </div>
+
+    <div id="basic" class="col-lg-6 mx-auto layout-spacing mt-3">
+        <div class="statbox widget box box-shadow">
+            <div class="widget-header">
+                <div class="row">
+                    <div class="col-12">
+                        <h4>Crear Usuario</h4>
+                    </div>                 
+                </div>
+            </div>
+            <div class="widget-content widget-content-area">
+
+                <div class="row">
+                    <div class="col-12">
+                        <form method="post" action="/user/update/{{userData._id}}">
+                            <div class="form-group">
+                                <label for="t-text" class="">Nombre de usuario</label>
+                                <input id="t-text" type="text" name="username" value="{{userData.username}}" placeholder="Usuario" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="t-email" class="">Correo Eléctrónico</label>
+                                <input id="t-email" type="email" name="email" value="{{userData.email}}" placeholder="Correo Electrónico" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="enviar" placeholder="" class="btn btn-primary border-0 rounded btn-lg" required>
+                            </div>
+                        </form>
+                    </div>                                        
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

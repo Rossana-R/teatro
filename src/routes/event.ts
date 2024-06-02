@@ -1,36 +1,43 @@
-import { Request, Response, Router } from "express";
-import { CreateUser, GetUserById, GetUsers, UpdateDataUser, UpdateDeleteUser, UpdatePasswordUser } from "../controllers/admin.controller";
-import { OffSession, OnSession } from "../middleware/auth";
-import { CreateUserMdl, GetUserByIdMdl, GetUsersMld } from "../model/user.model";
-import { GetEventById, GetEventCounts, GetEvents } from "../model/event.model";
-// import userSchema from "../model/schemas/userSchema";"
-import { EventAporteRender, EventByIdRender, EventDataAdminRender, EventsRender, UpdateAdminEvent, UpdateAdminPaymentEvent, UpdateDataEvent, UpdateEvent, UpdateMethodAporteEvent, UpdateMoreAporteEvent, UpdateStatusEvent } from "../controllers/EventController";
+import { Router } from "express";
+import { OnSession } from "../middleware/auth";
+import { 
+    RenderEventDashboard,
+    RenderEventList, 
+    RenderEventUnique, 
+    RenderEventNew, 
+    RenderEventUpdate
+} from "../controllers/event.render";
+import { UpdateEvent, UpdateStatusEvent, UpdateAdminEvent, UpdateSetPaymentEvent, UpdateSetPaymentAvanceEvent } from "../controllers/EventController";
 
 const routes = Router();
 
 // render
-routes.get("/events", OnSession, EventsRender);
+routes.get("/events", OnSession, RenderEventDashboard);
 
-routes.get(`/event/:id`, OnSession, EventByIdRender)
+routes.get("/events/list", OnSession, RenderEventList);
 
-routes.get(`/event/:id/aporte`, OnSession, EventAporteRender);
+routes.get(`/event/:id/show`, OnSession, RenderEventUnique);
 
-routes.get(`/event/:id/admin`, OnSession, EventDataAdminRender)
+routes.get(`/events/new`, OnSession, RenderEventNew);
 
-routes.get(`/event/:id/update`, OnSession, UpdateEvent)
+routes.get(`/events/update/:id`, OnSession,RenderEventUpdate);
 
-routes.get(`/event/:id/status`, OnSession, UpdateStatusEvent);
 
-routes.post(`/event/:id/update`, OnSession, UpdateDataEvent);
+// routes.get(`/event/:id/status`, OnSession);
 
-routes.post(`/event/update/admin/:id`, OnSession, UpdateAdminEvent);
+routes.post(`/event/:id/update`, OnSession, UpdateEvent);
 
-routes.post(`/event/update/payment/:id`, OnSession, UpdateAdminPaymentEvent);
+routes.post(`/event/:id/status`, OnSession, UpdateStatusEvent);
+routes.post(`/event/:id/admin`, OnSession, UpdateAdminEvent);
+routes.post(`/event/:id/setpayment`, OnSession, UpdateSetPaymentEvent);
+routes.post(`/event/:id/set/payment`, OnSession, UpdateSetPaymentAvanceEvent);
 
-// routes.post(`/event/update/payment/:id`, OnSession, UpdateAdminPaymentEvent);
+// routes.post(`/event/update/payment/:id`, OnSession);
 
-routes.post(`/event/update/aporte/:id`, OnSession, UpdateMethodAporteEvent);
-routes.post(`/event/update/aporte/:id/avances`, OnSession, UpdateMoreAporteEvent);
+// // routes.post(`/event/update/payment/:id`, OnSession);
+
+// routes.post(`/event/update/aporte/:id`, OnSession);
+// routes.post(`/event/update/aporte/:id/avances`, OnSession);
 
 
 

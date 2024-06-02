@@ -1,17 +1,15 @@
 import { Request, Response } from "express";
-import { ComparePassword, CreateUserMdl, GetUserByEmailMdl, GetUserByUsernameMdl, GetUsersCounts, UpdateUserDataMdl, UpdateUserDeleteMdl, UpdateUserPasswordMdl } from "../model/user.model";
+import { ComparePassword, CreateUserMdl, GetUserByEmailMdl, GetUserByIdMdl, GetUserByUsernameMdl, GetUsersCounts, GetUsersMld, UpdateUserDataMdl, UpdateUserDeleteMdl, UpdateUserPasswordMdl } from "../model/user.model";
 import { DataUser, RegisterUser } from "../type/user.d";
-import { GetEventCounts } from "../model/event.model";
 import { ChangeTwoLength } from "../utils/utils";
-import { CountsEventsBy, GetEventToDate } from "../model/EventModel";
+import { CountsAll, CountsEventsBy, GetEvents, GetEventToDate } from "../model/EventModel";
 // import { RequestExtended } from "../type/ex";
 
-// renders
 export async function RenderDashboard(req: Request, res: Response) {
     try {
 
         const users =  GetUsersCounts();
-        const events = GetEventCounts();
+        const events = CountsAll();
 
         const date = new Date();
         const year = date.getFullYear();
@@ -37,22 +35,17 @@ export async function RenderDashboard(req: Request, res: Response) {
         ];
 
         const ToView = {
+            ubication: `Panel de control`,
             userCount: await users,
             eventCount: await events,
-            eventToDay: await EventToDay,
-            eventToMorrow: await EventToMorrow,
             eventsDay: [
+                await EventToDay,
+                await EventToMorrow,
                 await eventDayForDay[2],
                 await eventDayForDay[3],
                 await eventDayForDay[4],
                 await eventDayForDay[5],
                 await eventDayForDay[6],
-            ],
-            eventsCounts: [
-                {cl: `bg-emerald-300`,type: `FINALIZADO`,count:await CountEventList[0]},
-                {cl: `bg-slate-300`,type: `CANCELADO`,count:await CountEventList[1]},
-                {cl: `bg-gray-300`,type: `RECIBIDO`,count:await CountEventList[2]},
-                {cl: `bg-sky-300`,type: `APROBADO`,count:await CountEventList[3]}
             ]
         }
 
@@ -65,6 +58,7 @@ export async function RenderDashboard(req: Request, res: Response) {
     }
 }
 
+// User Logic
 export async function CreateUser(req: Request, res: Response) {
     const {username, email, password} = req.body;
 
@@ -89,8 +83,6 @@ export async function CreateUser(req: Request, res: Response) {
     req.flash(`succ`, `Usuario registrado exitosamente.`);
     return res.redirect(`/users`);
 }
-export async function GetUsers(req: Request, res: Response) {}
-export async function GetUserById(req: Request, res: Response) {}
 
 export async function UpdateDataUser(req: Request, res: Response) {
     const {email, username} = req.body;
@@ -131,20 +123,6 @@ export async function UpdateDataUser(req: Request, res: Response) {
 
 }
 
-export async function UpdateAvatarUser(req: Request, res: Response) {
-    // const saveName = req;
-    // const id = req.params.id;
-
-    // if(password === repeat) {
-    //     req.flash(`err`, `Las contraseñas no coinciden`);
-    //     return res.redirect(`/users`);
-    // }
-
-    // await UpdateUserPasswordMdl({id,password});
-    req.flash(`succ`, `en desarrollo`);
-    return res.redirect(`/users`);
-}
-
 export async function UpdatePasswordUser(req: Request, res: Response) {
     const {password, repeat, old, oldSave} = req.body;
     const id = req.params.id;
@@ -152,7 +130,7 @@ export async function UpdatePasswordUser(req: Request, res: Response) {
     const matchPassword = await ComparePassword({ password: old, passwordDb: oldSave });
 
     if (!matchPassword) {
-        req.flash(`err`, `Las actual no coincide`);
+        req.flash(`err`, `La contraseña actual no coincide.`);
         return res.redirect(`/profile`);
     }
 
@@ -173,3 +151,6 @@ export async function UpdateDeleteUser(req: Request, res: Response) {
     req.flash(`succ`, `usuario eliminado exitosamente`);
     return res.redirect(`/users`);
 }
+
+// event Logic
+

@@ -35,6 +35,7 @@ const Event = new Schema({
     admin_arancel: String, // APORTE | APOYO INSTITUCIONAL
     
     admin_cancelation: {
+        mount_unity: String,
         mount_total: Number,
         description: String,
         mount_cancelation: [{date: String, code: String, mount:String, percentage:Number}]

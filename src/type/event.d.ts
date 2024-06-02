@@ -25,11 +25,13 @@ export interface EventDescription {
     admin_cancelation: {
         mount_total: number,
         description: string,
-        mount_cancelation: [{date: string, code: string, mount:string, percentage:number}] | []
+        mount_cancelation: Cancelation[]
     },
     admin_observation: string
 
 }
+
+interface Cancelation {date: string, code: string, mount:string, percentage:number}
 
 export interface EventArea {
     room: boolean,
@@ -45,6 +47,7 @@ export interface CreateEvent extends EventDescription {
 
 export interface CompleteDataEvent extends CreateEvent {
     _id: string,
+    admin_status: string,
 
     create_at: string,
     update_at: string,

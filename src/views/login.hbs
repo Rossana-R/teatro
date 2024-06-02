@@ -1,60 +1,58 @@
+<link href="assets/css/authentication/form-1.css" rel="stylesheet" type="text/css" />
 
-<section class="min-h-screen w-full grid place-items-center p-10">
-    <form class="bg-white p-5 rounded-[20px] w-full lg:w-[50%]" action="/login" method="POST">
-        <h2 class="text-center text-3xl font-light text-gray-800">Inicia Sesión</h2>
+<div class="form-container">
+    <div class="form-form">
+        <div class="form-form-wrap">
+            <div class="form-container">
+                <div class="form-content">
+                    <h1 class="h2">Iniciar sesión <br><span class="brand-name">Teatro Simón Bolivar</span></h1>
+                    <form class="text-left" method="POST" action="/login">
+                        <div class="form">
+                            <div id="email-field" class="field-wrapper input">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                <input id="email" name="email" type="email" class="form-control" placeholder="Correo Electrónico">
+                            </div>
 
-        <div class="grid place-items-center mt-5">
-            <label class="block text-gray-800 font-semibold text-sm"
-                >Correo Electrónico</label
-            >
-            <div class="mt-2">
-                <input
-                    type="email"
-                    name="email"
-                    class="block w-80 rounded-md py-1.5 px-2 ring-1 ring-inset ring-gray-400 focus:text-gray-800"
-                />
+                            <div id="password-field" class="field-wrapper input mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                <input id="password" name="password" type="password" class="form-control" placeholder="Contraseña">
+                            </div>
+                            <div class="d-sm-flex justify-content-between">
+                                <div class="field-wrapper toggle-pass">
+                                    <p class="d-inline-block">Ver contraseña</p>
+                                    <label class="switch s-primary">
+                                        <input type="checkbox" id="toggle-password" class="">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="field-wrapper">
+                                    <button type="submit" class="btn btn-primary" value="">Entrar</button>
+                                </div>
+                                
+                            </div>
+
+                            {{!-- <div class="field-wrapper">
+                                <a href="auth_pass_recovery.html" class="forgot-pass-link">Forgot Password?</a>
+                            </div> --}}
+
+                        </div>
+                    </form>                        
+                    <p class="terms-conditions">© 2024. <span>Ft</span> la mejor opción en impresiones, copias, y demás servicio</a></p>
+
+                </div>                    
             </div>
-            <label class="pt-1 block text-gray-500 text-sm">ingrese su correo electrónico personal</label>
         </div>
-
-        <div class="grid place-items-center mt-5">
-            <label class="block text-gray-800 font-semibold text-sm"
-                >Contraseña</label
-            >
-            <div class="mt-2">
-                <input
-                    type="password"
-                    name="password"
-                    class="block w-80 rounded-md py-1.5 px-2 ring-1 ring-inset ring-gray-400 focus:text-gray-800"
-                />
-            </div>
-            <label class="pt-1 block text-gray-500 text-sm">ingrese su contraseña segura</label>
+    </div>
+    <div class="form-image">
+        <div class="l-image">
         </div>
+    </div>
+</div>
 
-        <button type="submit" class="w-full mt-5 flex items-center justify-center cursor-pointer">
-            <div
-                class="relative inline-flex items-center justify-start py-3 pl-4 pr-12 overflow-hidden font-semibold shadow text-indigo-600 transition-all duration-150 ease-in-out rounded hover:pl-10 hover:pr-6 bg-gray-50 dark:bg-gray-700 dark:text-white dark:hover:text-gray-200 dark:shadow-none group"
-            >
-                <span class="absolute bottom-0 left-0 w-full h-1 transition-all duration-150 ease-in-out bg-indigo-600 group-hover:h-full"></span>
-                <span
-                class="absolute right-0 pr-4 duration-200 ease-out group-hover:translate-x-12">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" class="w-5 h-5 text-green-400">
-                    <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" ></path>
-                </svg>
-                </span>
-                <span class="absolute left-0 pl-2.5 -translate-x-12 group-hover:translate-x-0 ease-out duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" class="w-5 h-5 text-green-400">
-                        <path
-                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                        stroke-width="2"
-                        stroke-linejoin="round"
-                        stroke-linecap="round"
-                        ></path>
-                    </svg>
-                </span>
-                <span class="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white dark:group-hover:text-gray-200">Entrar</span>
-            </div>
-        </button>
+<!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+<script src="/assets/js/libs/jquery-3.1.1.min.js"></script>
+<script src="/bootstrap/js/popper.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
 
-    </form>
-</section>
+<!-- END GLOBAL MANDATORY SCRIPTS -->
+<script src="/assets/js/authentication/form-1.js"></script>

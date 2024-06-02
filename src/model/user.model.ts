@@ -12,8 +12,9 @@ export const GetUsersCounts = async () => {
     return result;
 }
 
-export const GetUsersMld = async () => {
+export const GetUsersMld = async ({pag}:{pag:number}) => {
     const result = await userSchema.find({
+
         $and: [
             {
                 rol: { $ne:`ROOT` }
@@ -26,7 +27,7 @@ export const GetUsersMld = async () => {
                 ]
             }
         ]
-    });
+    }).skip(pag*10).limit(10);
     return result;
 };
 export const GetUserByIdMdl = async ({id}: {id: string}) => {

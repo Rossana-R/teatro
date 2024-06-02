@@ -1,10 +1,11 @@
 import { Request, Response, Router } from "express";
 import passport from "passport";
+import { GetRecentEvent } from "../model/EventModel";
 
 const routes = Router();
 
-routes.get(`/login`, (req, res) => {
-
+routes.get(`/login`, async (req, res) => {
+    await GetRecentEvent();
     return res.render(`login`);
 });
 

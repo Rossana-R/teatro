@@ -17,22 +17,7 @@ export async function ValidEventDate({date}: {date:string}) {
     return result;
 }
 
-export async function GetEventCounts() {
-    const result = await eventSchema.count({});
-    return result;
-}
-
-export async function GetEvents() {
-    const result = await eventSchema.find();
-    return result;
-}
-
-export async function GetEventById({id}:{id:string}) {
-    const result = await eventSchema.findOne({_id:id});
-    return result;
-}
-
-export async function GetEventByCode({code}:{code:string}) {
-    const result = await eventSchema.findOne({admin_code:code});
+export async function GetEvents({pag}:{pag:number}) {
+    const result = await eventSchema.find().skip(pag*10).limit(10);
     return result;
 }
