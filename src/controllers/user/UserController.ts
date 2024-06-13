@@ -107,12 +107,12 @@ class UserController extends BaseController {
             
             await UserModel.CreateUser({ data: NewUser });
             req.flash(`succ`, `Usuario creado.`);
-            return res.redirect(`/users`);
+            return res.redirect(`/user/list`);
 
         } catch (error) {
             console.log(error);
             req.flash(`err`, `No se pudo crear el usuario.`);
-            return res.redirect(`/users`);
+            return res.redirect(`/user/list`);
         }
     }
 

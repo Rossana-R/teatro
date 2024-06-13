@@ -5,7 +5,7 @@
 <div class="row px-4 d-flex justify-content-between">
     <div></div>
     <div class="">
-        <a href="/event/list" class="bg-primary px-3 py-1 rounded mx-3">
+        <a href="/event" class="bg-primary px-3 py-1 rounded mx-3">
             <i class="bi bi-box-arrow-left"></i>
             volver
         </a>
@@ -37,7 +37,7 @@
                             <td>{{this.admin_date}}</td>
                             <td>{{this.fullname}}</td>
                             <td>
-                                <a href="/event/{{this.eventId}}/update" class="bi bi-eye-fill lead">.</a>
+                                <a href="/event/{{this.eventId}}/update" class="bi bi-eye-fill lead btn btn-primary"></a>
                             </td>
                         </tr> 
                         {{/each}}
