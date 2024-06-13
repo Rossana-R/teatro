@@ -1,0 +1,66 @@
+<link href="/assets/css/dashboard/dash_1.css" rel="stylesheet" type="text/css" />
+{{!-- <link href="assets/css/dashboard/dash_2.css" rel="stylesheet" type="text/css" /> --}}
+
+<div class="container">
+    <div class="row layout-top-spacing">
+{{!-- 
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+            <div class="widget widget-account-invoice-one">
+
+                <div class="widget-heading">
+                    <h5 class="">Resumen: transacciones</h5>
+                </div>
+
+                <div class="widget-content">
+                    <div class="invoice-box">
+                    
+                        <div class="inv-detail">                                        
+                            <div class="info-detail-1">
+                                <p>total</p>
+                                <p>{{transactionCount}}</p>
+                            </div>
+                            <div class="info-detail-2">
+                                <p>ingreso</p>
+                                <p>{{ingresoCount}}</p>
+                            </div>
+                            <div class="info-detail-2">
+                                <p>egreso</p>
+                                <p>{{egresoCount}}</p>
+                            </div>
+                        </div>
+
+                        <div class="inv-action">
+                            <a href="/" class="btn btn-dark">Ver transacciones</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div> --}}
+
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+            <div class="widget widget-table-one">
+                <div class="widget-heading">
+                    <h5 class="">Eventos ({{eventsStatus.all}})</h5>
+                </div>
+
+                <div class="widget-content">
+                    {{#Dashboard1 "Recibidos" eventsStatus.recibido}}
+                        {{this}}
+                    {{/Dashboard1}}
+                    {{#Dashboard1 "Aprovados" eventsStatus.aprovado}}
+                        {{this}}
+                    {{/Dashboard1}}
+                    {{#Dashboard1 "Cancelados" eventsStatus.cancelado}}
+                        {{this}}
+                    {{/Dashboard1}}
+                    {{#Dashboard1 "Finalizados" eventsStatus.finalizado}}
+                        {{this}}
+                    {{/Dashboard1}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

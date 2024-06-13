@@ -1,10 +1,5 @@
 import flash from "connect-flash";
-import express, {
-  Application,
-  json,
-  urlencoded
-} from "express";
-import initMongoDB from "./config/mongodb";
+import express, { NextFunction, Request, Response } from "express";
 import exphbs from "express-handlebars";
 import session from "express-session";
 import methodOverride from "method-override";
@@ -13,16 +8,15 @@ import morgan from "morgan";
 import passport from "passport";
 import path from "path";
 import helpersHandlebars from "./config/helpers/helpers";
-import RouteAdmin from "./routes/admin";
-import RouteAuth from "./routes/auth";
-import RouteDefault from "./routes/default";
-import RoutePublic from "./routes/public";
-import RouteEvent from "./routes/event";
+import Auth from "./controllers/auth/AuthController";
+import User from "./controllers/user/UserController";
+import Event from "./controllers/event/EventController";
+import APIStattictics from "./controllers/API/Statictics";
 import { PORT } from "./constant";
 import "./config/passport";
 
 // init
-const app: Application = express();
+const app = express();
 // require("./config/passport.ts");
 
 // Set Template engine to handlebars
@@ -38,8 +32,8 @@ app.set("view engine", "hbs");
 
 // Middleware
 app.use(morgan("dev"));
-app.use(json());
-app.use(urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(session({
   secret: "base_app",
@@ -51,7 +45,7 @@ app.use(passport.session());
 app.use(flash());
 
 // Global Var
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.locals.user = req.user || null;
   res.locals.succ = req.flash("succ");
     res.locals.err = req.flash("err");
@@ -60,20 +54,28 @@ app.use((req, res, next) => {
 });
 
 // Route Auth
-app.use("/", RouteAuth);
-app.use("/", RouteDefault);
-app.use("/", RouteAdmin);
-app.use("/", RoutePublic);
-app.use("/", RouteEvent);
+app.get(`/`, (req, res) => {
+  if(req.user) return res.redirect(`/dashboard`);
+  res.redirect(`/login`)
+})
+
+app.use("/", Auth.LoadRouters());
+app.use("/", User.LoadRouters());
+app.use("/", Event.LoadRouters());
+app.use("/", APIStattictics.LoadRoutes())
+
+app.use("/start/user", User.InsertUserBase);
+app.use("/start/statictis", User.StartStaticticsForYear);
+
 
 // Static Files
+console.log(path.join(__dirname, "../public"));
 app.use(express.static(path.join(__dirname, "../public")));
 
 // Init Express
 app.listen(
   PORT,
   () => {
-    initMongoDB();
     console.log(`Server started on port ${PORT}`) // tslint:disable-line
   }
 );
