@@ -11,6 +11,7 @@ import helpersHandlebars from "./config/helpers/helpers";
 import Auth from "./controllers/auth/AuthController";
 import User from "./controllers/user/UserController";
 import Event from "./controllers/event/EventController";
+import Public from "./controllers/PublicController";
 import APIStattictics from "./controllers/API/Statictics";
 import { PORT } from "./constant";
 import "./config/passport";
@@ -63,6 +64,7 @@ app.use("/", Auth.LoadRouters());
 app.use("/", User.LoadRouters());
 app.use("/", Event.LoadRouters());
 app.use("/", APIStattictics.LoadRoutes())
+app.use(`/`, Public.LoadRoutes());
 
 app.use("/start/user", User.InsertUserBase);
 app.use("/start/statictis", User.StartStaticticsForYear);

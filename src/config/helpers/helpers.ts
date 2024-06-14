@@ -96,6 +96,14 @@ const Helpers = {
                 </div>
             </div>
         `
+    },
+
+    SepareTDate(name:string, date:any, options:any) {
+        return `${name} <b>${date.toString().split(`T`)[0]} - ${date.toString().split(`T`)[1]}</b>`
+    },
+
+    CheckArea(name:string, area:boolean, options:any) {
+        return area ? `<p>${name} <b>reservado</b></p>` : `<p></p>`;
     }
     
 };

@@ -25,7 +25,7 @@ class TransactionModel extends AbstractModel {
         this.StartPrisma();
         const result = await this.prisma.transaction.create({data});
         this.DistroyPrisma();
-        this.StaticticsUpdate({});
+        // this.StaticticsUpdate({});
         return result;
     }   
     
