@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import BaseController from "../BaseController";
 import EventModel from "../../models/event/EventModel";
-import TransactionModel from "../../models/transacction/TransactionModel";
+import TransactionInstance from "../../models/transacction/TransactionModel";
 import { OnSession } from "../../middleware/auth";
 import { CancelationCreate, EventCreate, RefReference } from "../../type/event";
+
+const TransactionModel = new TransactionInstance();
 
 class UserController extends BaseController {
 
@@ -13,9 +15,7 @@ class UserController extends BaseController {
         const transsactions = await transactionsCountPromise;
 
         return res.render(`s/event/dashboard.hbs`, {
-            transactionCount: transsactions.all,
-            egresoCount: transsactions.egreso,
-            ingresoCount: transsactions.ingreso,
+            transactionCount: transsactions,
             ubication: `Resumen`,
         });
     }

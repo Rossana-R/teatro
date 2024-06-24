@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import BaseController from "../BaseController";
 import UserModel from "../../models/user/UserModel";
-import TransactionModel from "../../models/transacction/TransactionModel";
+import TransactionInstance from "../../models/transacction/TransactionModel";
 import { UserCompleted, UserCreate } from "../../type/user";
 import { OnSession } from "../../middleware/auth";
 import EventModel from "../../models/event/EventModel";
+
+const TransactionModel = new TransactionInstance();
 
 class UserController extends BaseController {
 
@@ -15,9 +17,7 @@ class UserController extends BaseController {
         const transsactions = await transactionsCountPromise;
 
         return res.render(`s/dashboard.hbs`, {
-            transactionCount: transsactions.all,
-            egresoCount: transsactions.egreso,
-            ingresoCount: transsactions.ingreso,
+            transactionCount: transsactions,
             ubication: `Resumen`,
             eventsStatus: counts
         });

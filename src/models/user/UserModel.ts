@@ -88,13 +88,10 @@ class UserModel extends AbstractModel {
     }
 
     public async StaticticsTopUsers({limit}:{limit:number}) {
-        // const transaction = await TransactionModel.UsersActives({ limit:5 });
-        // return transaction;
         this.StartPrisma();
         const result = this.prisma.user.findMany({
             include: {
                 _count: true,
-                transaction: true,
             },
             skip: 0,
             take: limit

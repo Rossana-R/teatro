@@ -1,4 +1,5 @@
-import { TransactionCreate as TransactionCreateType } from "../../type/transaction";
+import { connect } from "mongoose";
+import { TransactionCreate } from "../../type/transaction";
 import AbstractModel from "../BaseModel";
 
 class TransactionModel extends AbstractModel {
@@ -7,90 +8,68 @@ class TransactionModel extends AbstractModel {
         super();
     }
 
-    // count
     public async CountAllTransactions({}:{}) {
         this.StartPrisma();
         const allPromise = this.prisma.transaction.count({});
-        const egresoPromise = this.prisma.transaction.count({ where:{ OR:[{type:`EGRESO`}, {concepto: { startsWith:`egreso` }}] } });
-        const ingresoPromise = this.prisma.transaction.count({ where:{ OR:[{type:`INGRESO`}, {concepto: { startsWith:`ingreso` }}] } });
-        const all = await allPromise;
-        const egreso = await egresoPromise;
-        const ingreso = await ingresoPromise;
-        this.DistroyPrisma();
-        return { all,egreso,ingreso };
-    }
 
-    // crear Transaction
-    public async CreateTransaction({data}:{data:TransactionCreateType}) {
-        this.StartPrisma();
-        const result = await this.prisma.transaction.create({data});
-        this.DistroyPrisma();
-        // this.StaticticsUpdate({});
-        return result;
-    }   
-    
-    // actualiza Transaction
-    public async UpdateTransaction({id,data}:{id:string,data:TransactionCreateType}) {
-        this.StartPrisma();
-        const result = await this.prisma.transaction.update({data, where:{transactionId:id}});
-        this.DistroyPrisma();
-        return result;
-    }    
-
-    // elimina Transaction
-    public async DeleteTransaction({id}:{id:string}) {
-        this.StartPrisma();
-        await this.prisma.transaction.update({data:{delete_at:Date.now().toString()}, where:{transactionId:id}});
-        this.DistroyPrisma();
-        return true; // boolean
-    }   
-
-    // obtiene todos los Transaction de 10 en 10
-    public async GetAllTransaction({pag, limit=10}:{pag:number, limit:number}) {
-        this.StartPrisma();
-        const result = await this.prisma.transaction.findMany({ 
-            where:{delete_at:null}, 
-            skip:pag*limit, 
-            take:limit,
-            include:{
-                createReference: true,
-            }, 
+        const typeCountPromise = await this.prisma.transaction.groupBy({
+            by: "typeId",
+            _count: true,
         });
+
+        this.DistroyPrisma();
+        return typeCountPromise
+    }
+
+    public async Create({ data }: { data: TransactionCreate }) {
+        this.StartPrisma();
+        const result = this.prisma.transaction.create({ data });
         this.DistroyPrisma();
         return result;
     }
 
-    // obtiene un Transaction por id
-    public async GetTransactionById({id}:{id:string}) {
+    public async Update({ data, id }: {data: TransactionCreate, id: string}) {
         this.StartPrisma();
-        const result = await this.prisma.transaction.findFirst({ 
-            where:{transactionId:id}, 
-            include:{
-                createReference:true
-            }, 
-        });
-        if(result == null) return null;
-        
+        const result = this.prisma.transaction.update({ data, where:{transactionId:id} });
         this.DistroyPrisma();
         return result;
     }
 
-    // statics users actives
-    public async UsersActives({limit=5}:{limit:number}) {
+    public async GetById({ id }: {id:string}) {
         this.StartPrisma();
-        const result = await this.prisma.transaction.groupBy({
-            by: "createBy",
-            _count: {
-                createBy:true
-            },
-            orderBy: {
-                createBy: "asc"
-            },
+        const result = await this.prisma.transaction.findFirst({ where:{transactionId:id} });
+        const type = this.prisma.transactionType.findFirst({ where:{ transactionTypeId:result?.typeId } });
+        const category = this.prisma.transactionCategory.findFirst({ where:{ transactionCategoryId:result?.categoryId } });
+        const user = this.prisma.user.findFirst({ where:{ userId:result?.createId } });
+
+        const newResult = {
+            ...result,
+            typeReferende: await type,
+            categoryReferende: await category,
+            createReference: await user,
+        }
+        this.DistroyPrisma();
+        console.log(newResult);
+        return newResult;
+    }
+
+    public async CountAll() {
+        this.StartPrisma();
+        const result = await this.prisma.transactionType.count();
+        this.DistroyPrisma();
+        return result;
+    } 
+
+    public async GetPagination({ pag, limit }: {pag:number, limit:number}) {
+        this.StartPrisma();
+        const result = await this.prisma.transaction.findMany({
+            skip: pag*limit,
             take: limit,
         });
         this.DistroyPrisma();
+        console.log(result);
         return result;
     }
 }
 
-export default new TransactionModel;
+export default TransactionModel;

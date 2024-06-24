@@ -20,13 +20,6 @@ class AbstractModel {
         await this.prisma.$disconnect();
     }
 
-    async CreateTransaction({data}: {data: TransactionCreate}) {
-        this.StartPrisma();
-        const result = await this.prisma.transaction.create({data});
-        this.DistroyPrisma();
-        return result;
-    }
-
     async CreateStatictisForYear({year}:{year:number}) {
         this.StartPrisma();
 

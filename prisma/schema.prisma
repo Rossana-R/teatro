@@ -27,7 +27,9 @@ model User {
 
   createBy          String?
 
-  transaction       Transaction[]
+  // transaction       Transaction[]
+  typeList        TransactionType[]
+  categoryList    TransactionCategory[]
 
   create_at DateTime  @default(now())
   update_at DateTime  @default(now()) @updatedAt
@@ -92,19 +94,49 @@ model CancelationRef {
     cancelationRef        Cancelations      @relation(fields: [cancelationsId], references: [cancelationId])
 }
 
+
 model Transaction {
-  transactionId           String      @id @default(uuid())
-  concepto                String
-  mount                   Float
+  transactionId         String    @id     @default(uuid())
+  mount                 Int
+  description           String
+  date                  String
 
-  type                    String      @default("")
+  categoryId            String
+  typeId                String
 
-  createBy String
-  createReference         User  @relation(fields: [createBy], references: [userId])
+  createId              String
 
-  create_at               DateTime  @default(now())
-  delete_at               DateTime?
+  create_at             DateTime      @default(now())
+  update_at             DateTime      @default(now()) @updatedAt
+  delete_at             DateTime?
 }
+
+model TransactionCategory {
+  transactionCategoryId         String    @id     @default(uuid())
+  name                  String
+  description                  String
+
+  createId              String
+  createReference       User          @relation(fields: [createId], references: [userId])    
+
+  create_at             DateTime      @default(now())
+  update_at             DateTime      @default(now()) @updatedAt
+  delete_at             DateTime?
+}
+
+model TransactionType {
+  transactionTypeId         String    @id     @default(uuid())
+  name                  String
+  description           String
+  
+  createId              String
+  createReference       User          @relation(fields: [createId], references: [userId])    
+
+  create_at             DateTime      @default(now())
+  update_at             DateTime      @default(now()) @updatedAt
+  delete_at             DateTime?
+}
+
 
 model StaticticsForYear {
   staticticsForYearId         String      @id @default(uuid())

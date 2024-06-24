@@ -11,6 +11,9 @@ import helpersHandlebars from "./config/helpers/helpers";
 import Auth from "./controllers/auth/AuthController";
 import User from "./controllers/user/UserController";
 import Event from "./controllers/event/EventController";
+import Type from "./controllers/transaction/type/TypeControl";
+import Category from "./controllers/transaction/category/CategoryController";
+import Transaction from "./controllers/transaction/TransactionController";
 import Public from "./controllers/PublicController";
 import APIStattictics from "./controllers/API/Statictics";
 import { PORT } from "./constant";
@@ -65,6 +68,10 @@ app.use("/", User.LoadRouters());
 app.use("/", Event.LoadRouters());
 app.use("/", APIStattictics.LoadRoutes())
 app.use(`/`, Public.LoadRoutes());
+
+app.use(`/`, Type.LoadRoutes());
+app.use(`/`, Category.LoadRoutes());
+app.use(`/`, Transaction.LoadRoutes());
 
 app.use("/start/user", User.InsertUserBase);
 app.use("/start/statictis", User.StartStaticticsForYear);
