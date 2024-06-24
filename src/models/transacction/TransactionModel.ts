@@ -10,15 +10,9 @@ class TransactionModel extends AbstractModel {
 
     public async CountAllTransactions({}:{}) {
         this.StartPrisma();
-        const allPromise = this.prisma.transaction.count({});
-
-        const typeCountPromise = await this.prisma.transaction.groupBy({
-            by: "typeId",
-            _count: true,
-        });
-
+        const countALl = this.prisma.transaction.count({});
         this.DistroyPrisma();
-        return typeCountPromise
+        return await countALl
     }
 
     public async Create({ data }: { data: TransactionCreate }) {
