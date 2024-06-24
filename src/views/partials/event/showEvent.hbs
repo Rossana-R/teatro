@@ -1,10 +1,14 @@
 
-<div class="container">
+<button class="btn btn-danger" id="DownloadPDF">
+    <i class="bi bi-pdf">Descardar pdf</i>
+</button>
+
+<div class="container" id="elementHTML">
     <div class="row">
         <div class="col-12 card mx-auto">
             <div class="card-body">
                 <h4 class="">Fecha y hora:</h4>
-                <table class="table table-sm table-striped">
+                <table class="tablePDF table table-sm table-striped">
                     <tbody>
                         <tr>
                             <td>Inicio</td>
@@ -18,7 +22,7 @@
                 </table>
 
                 <h4 class="mt-5">Datos responsable:</h4>
-                <table class="table table-sm table-striped">
+                <table class="tablePDF table table-sm table-striped">
                     <tbody>
                         <tr>
                             <td>ID</td>
@@ -48,7 +52,7 @@
                 </table>
 
                 <h4 class="mt-5">Datos evento:</h4>
-                <table class="table table-sm table-striped">
+                <table class="tablePDF table table-sm table-striped">
                     <tbody>
                         <tr>
                             <td>Nombre</td>
@@ -82,7 +86,7 @@
                 </table>
 
                 <h4 class="mt-5">Datos administración:</h4>
-                <table class="table table-sm table-striped">
+                <table class="tablePDF table table-sm table-striped">
                     <tbody>
                         <tr>
                             <td>Codigo de reservación</td>
@@ -106,3 +110,32 @@
         </div>
     </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+<script>
+    function generatePDF() {
+        const elementHTML = $('#elementHTML').html();
+        const tables = document.querySelectorAll(`.tablePDF`);
+        const doc = new jsPDF();
+
+        const specialElementHandlers = {
+            '#elementH': function (element, renderer) {
+                return true;
+            }
+        };
+        
+        doc.fromHTML(elementHTML, 15, 15, {
+            'width': 170,
+            'elementHandlers': specialElementHandlers,
+        });
+
+        return doc;
+    }
+    
+    $(`#DownloadPDF`).click(() => {
+        const pdf = generatePDF();
+        pdf.save(name);
+    })
+</script>

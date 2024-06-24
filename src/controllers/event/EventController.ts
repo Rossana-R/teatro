@@ -173,12 +173,24 @@ class UserController extends BaseController {
 
     }
 
+    public async UpdateAdmin(req: Request, res: Response) {
+        const { admin_observation, admin_code } = req.body;
+        const id = req.params.id;
+
+        await EventModel.UpdateEvent({ data:{admin_observation, admin_code}, id });
+
+        req.flash(`succ`, `Actualización exitosa`);
+        return res.redirect(`/event/list`);
+    }
+
     public LoadRouters() {
         this.router.get(`/event/`, OnSession, this.DashboardController);
         this.router.get(`/event/statictics`, OnSession, this.StaticticsController);
         this.router.get(`/event/list`, OnSession, this.RenderList);
         this.router.get(`/event/create`, OnSession, this.RenderCreate);
         this.router.get(`/event/:id/update`, OnSession, this.RenderShow);
+
+        this.router.post(`/event/:id/admin`, OnSession, this.UpdateAdmin);
         this.router.post(`/event/:id/status`, OnSession, this.SetStateEvent);
         this.router.post(`/event/create`, OnSession, this.CreateEventPost);
         this.router.post(`/event/:id/create/cancelation`, OnSession, this.AddCancelation);

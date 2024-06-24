@@ -96,6 +96,15 @@ class EventModel extends AbstractModel {
         return result;
     }
 
+    public async UpdateEvent({data, id}:{data:any,id: string}) {
+        this.StartPrisma();
+        const result = this.prisma.event.update({
+            data,
+            where: {eventId:id}
+        })
+        this.DistroyPrisma();
+        return await result;
+    }
 }
 
 export default new EventModel();
