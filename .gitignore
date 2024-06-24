@@ -1,16 +1,2 @@
 node_modules/
-dist/api/
-dist/config/
-dist/models/
-dist/app.js
-dist/express.js
-dist/constant.js
-dist/controllers/
-dist/middleware/
-dist/routes/
-dist/type/
-dist/utils/
-dist/app.js.map
-dist/constant.js.map
-dist/express.js.map
 .env
