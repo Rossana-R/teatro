@@ -1,7 +1,7 @@
 
-<button class="btn btn-danger" id="DownloadPDF">
+<a href="javascript:pruebaDivAPdf()" class="btn btn-danger" id="DownloadPDF">
     <i class="bi bi-pdf">Descardar pdf</i>
-</button>
+</a>
 
 <div class="container" id="elementHTML">
     <div class="row">
@@ -111,31 +111,38 @@
     </div>
 </div>
 
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
 <script>
-    function generatePDF() {
-        const elementHTML = $('#elementHTML').html();
-        const tables = document.querySelectorAll(`.tablePDF`);
-        const doc = new jsPDF();
+    function pruebaDivAPdf() {
+        const pdf = new jsPDF('p', 'pt', 'letter');
+        source = $('#elementHTML')[0];
 
-        const specialElementHandlers = {
-            '#elementH': function (element, renderer) {
-                return true;
+        specialElementHandlers = {
+            '#bypassme': function (element, renderer) {
+                return true
             }
         };
-        
-        doc.fromHTML(elementHTML, 15, 15, {
-            'width': 170,
-            'elementHandlers': specialElementHandlers,
-        });
+        margins = {
+            top: 80,
+            bottom: 60,
+            left: 40,
+            width: 522
+        };
 
-        return doc;
+        pdf.fromHTML(
+            source, 
+            margins.left, // x coord
+            margins.top, { // y coord
+                'width': margins.width, 
+                'elementHandlers': specialElementHandlers
+            },
+
+            function (dispose) {
+                pdf.save('Prueba.pdf');
+            }, margins
+        );
     }
-    
-    $(`#DownloadPDF`).click(() => {
-        const pdf = generatePDF();
-        pdf.save(name);
-    })
 </script>
