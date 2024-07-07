@@ -32,8 +32,19 @@ class UserController extends BaseController {
         const pag = req.params.pag | 0;
         const limit = req.params.limit | 10; 
 
-        const events = EventModel.GetEvents({pag, limit});
-        const countPromise = EventModel.CountBy({ filter:{} });
+        const date = req.body.date;
+        const status = req.body.status;
+
+        console.log(`date`, date);
+        const filter: any = {};
+
+        if(status && status !== "ALL") filter.admin_status = status;
+        if(date) filter.admin_date = date;
+
+        console.log(`filter`, filter);
+
+        const events = EventModel.GetEvents({pag, limit, filter});
+        const countPromise = EventModel.CountBy({ filter });
 
         const Params = {
             list: await events,
@@ -187,6 +198,7 @@ class UserController extends BaseController {
         this.router.get(`/event/`, OnSession, this.DashboardController);
         this.router.get(`/event/statictics`, OnSession, this.StaticticsController);
         this.router.get(`/event/list`, OnSession, this.RenderList);
+        this.router.post(`/event/list`, OnSession, this.RenderList);
         this.router.get(`/event/create`, OnSession, this.RenderCreate);
         this.router.get(`/event/:id/update`, OnSession, this.RenderShow);
 

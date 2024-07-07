@@ -3,8 +3,21 @@
 <link href="/assets/css/elements/custom-pagination.css" rel="stylesheet" type="text/css" />
 
 <div class="row px-4 d-flex justify-content-between">
-    <div></div>
-    <div class="">
+    <form class="d-flex col-8 aling-items-center" action="/event/list" method="POST">
+        <h5 class="col">Buscar evento</h5>
+        <select name="status" class="form-control col">
+            <option selected value="ALL">Todos</option>
+            <option value="RECIBIDO">RECIBIDOS</option>
+            <option value="APROVADO">APROVADOS</option>
+            <option value="FINALIZADO">FINALIZADOS</option>
+            <option value="CANCELADO">CANCELADOS</option>
+        </select>
+        <input type="date" class="form-control col" name="date" />
+        <input type="submit" class="btn btn-primary" value="buscar" />
+    </form>
+
+
+    <div class="col-4">
         <a href="/event" class="bg-primary px-3 py-1 rounded mx-3">
             <i class="bi bi-box-arrow-left"></i>
             volver
@@ -14,6 +27,8 @@
             crear
         </a>
     </div>
+
+
 
     <div class="mt-3 col-12">
         {{#if list}}

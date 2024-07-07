@@ -8,21 +8,28 @@ class EventModel extends AbstractModel {
     }
 
     // get users pagination
-    public async GetEvents({pag, limit=10}: {pag:number, limit:number}) {
-        this.StartPrisma();
-        const result = await this.prisma.event.findMany({
-            skip: pag*10,
-            take: limit,
-            include: {
-                cancelationRef: {
-                    include: {
-                        eventRef: true
+    public async GetEvents({pag, limit=10, filter}: {pag:number, limit:number, filter: any}) {
+        try {
+            console.log(filter);
+            this.StartPrisma();
+            const result = await this.prisma.event.findMany({
+                where: filter ? filter : {},
+                skip: pag*10,
+                take: limit,
+                include: {
+                    cancelationRef: {
+                        include: {
+                            eventRef: true
+                        }
                     }
                 }
-            }
-        });
-        this.DistroyPrisma();
-        return result;
+            });
+            this.DistroyPrisma();
+            return result;
+        } catch (error) {
+            console.log(error);
+            return [];
+        }
 
     }
 

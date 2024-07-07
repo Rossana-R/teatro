@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  url      = "file:./data.db"
 }
 
 model App {
@@ -44,6 +44,8 @@ model Event {
   address                   String
   phone                     String
   email                     String
+
+  downloader_path           String?     @default("")
   
   event_type                String
   event_name                String
@@ -67,9 +69,9 @@ model Event {
   update_at                 DateTime    @default(now())   @updatedAt()
   delete_at                 DateTime?
 
-  coffe_bar           Boolean
-  room                Boolean
-  vip                 Boolean
+  coffe_bar                 Boolean
+  room                      Boolean
+  vip                       Boolean
   cancelationRef            Cancelations?
 }
 
