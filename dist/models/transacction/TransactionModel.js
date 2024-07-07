@@ -20,13 +20,9 @@ class TransactionModel extends BaseModel_1.default {
     CountAllTransactions(_a) {
         return __awaiter(this, arguments, void 0, function* ({}) {
             this.StartPrisma();
-            const allPromise = this.prisma.transaction.count({});
-            const typeCountPromise = yield this.prisma.transaction.groupBy({
-                by: "typeId",
-                _count: true,
-            });
+            const countALl = this.prisma.transaction.count({});
             this.DistroyPrisma();
-            return typeCountPromise;
+            return yield countALl;
         });
     }
     Create(_a) {

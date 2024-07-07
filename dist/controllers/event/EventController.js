@@ -40,8 +40,17 @@ class UserController extends BaseController_1.default {
         return __awaiter(this, void 0, void 0, function* () {
             const pag = req.params.pag | 0;
             const limit = req.params.limit | 10;
-            const events = EventModel_1.default.GetEvents({ pag, limit });
-            const countPromise = EventModel_1.default.CountBy({ filter: {} });
+            const date = req.body.date;
+            const status = req.body.status;
+            console.log(`date`, date);
+            const filter = {};
+            if (status && status !== "ALL")
+                filter.admin_status = status;
+            if (date)
+                filter.admin_date = date;
+            console.log(`filter`, filter);
+            const events = EventModel_1.default.GetEvents({ pag, limit, filter });
+            const countPromise = EventModel_1.default.CountBy({ filter });
             const Params = {
                 list: yield events,
                 next: `/event/list?pag=${pag + 1}`,
@@ -155,12 +164,23 @@ class UserController extends BaseController_1.default {
             return res.redirect(`/event/list`);
         });
     }
+    UpdateAdmin(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { admin_observation, admin_code } = req.body;
+            const id = req.params.id;
+            yield EventModel_1.default.UpdateEvent({ data: { admin_observation, admin_code }, id });
+            req.flash(`succ`, `Actualización exitosa`);
+            return res.redirect(`/event/list`);
+        });
+    }
     LoadRouters() {
         this.router.get(`/event/`, auth_1.OnSession, this.DashboardController);
         this.router.get(`/event/statictics`, auth_1.OnSession, this.StaticticsController);
         this.router.get(`/event/list`, auth_1.OnSession, this.RenderList);
+        this.router.post(`/event/list`, auth_1.OnSession, this.RenderList);
         this.router.get(`/event/create`, auth_1.OnSession, this.RenderCreate);
         this.router.get(`/event/:id/update`, auth_1.OnSession, this.RenderShow);
+        this.router.post(`/event/:id/admin`, auth_1.OnSession, this.UpdateAdmin);
         this.router.post(`/event/:id/status`, auth_1.OnSession, this.SetStateEvent);
         this.router.post(`/event/create`, auth_1.OnSession, this.CreateEventPost);
         this.router.post(`/event/:id/create/cancelation`, auth_1.OnSession, this.AddCancelation);

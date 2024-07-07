@@ -19,21 +19,29 @@ class EventModel extends BaseModel_1.default {
     }
     // get users pagination
     GetEvents(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ pag, limit = 10 }) {
-            this.StartPrisma();
-            const result = yield this.prisma.event.findMany({
-                skip: pag * 10,
-                take: limit,
-                include: {
-                    cancelationRef: {
-                        include: {
-                            eventRef: true
+        return __awaiter(this, arguments, void 0, function* ({ pag, limit = 10, filter }) {
+            try {
+                console.log(filter);
+                this.StartPrisma();
+                const result = yield this.prisma.event.findMany({
+                    where: filter ? filter : {},
+                    skip: pag * 10,
+                    take: limit,
+                    include: {
+                        cancelationRef: {
+                            include: {
+                                eventRef: true
+                            }
                         }
                     }
-                }
-            });
-            this.DistroyPrisma();
-            return result;
+                });
+                this.DistroyPrisma();
+                return result;
+            }
+            catch (error) {
+                console.log(error);
+                return [];
+            }
         });
     }
     CountBy(_a) {
@@ -111,6 +119,17 @@ class EventModel extends BaseModel_1.default {
             const result = yield this.prisma.cancelationRef.create({ data });
             this.DistroyPrisma();
             return result;
+        });
+    }
+    UpdateEvent(_a) {
+        return __awaiter(this, arguments, void 0, function* ({ data, id }) {
+            this.StartPrisma();
+            const result = this.prisma.event.update({
+                data,
+                where: { eventId: id }
+            });
+            this.DistroyPrisma();
+            return yield result;
         });
     }
 }
