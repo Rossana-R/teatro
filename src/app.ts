@@ -58,10 +58,10 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // Route Auth
-app.get(`/`, (req, res) => {
-  if(req.user) return res.redirect(`/dashboard`);
-  res.redirect(`/login`)
-})
+// app.get(`/`, (req, res) => {
+//   if(req.user) return res.redirect(`/dashboard`);
+//   res.redirect(`/login`)
+// })
 
 app.use("/", Auth.LoadRouters());
 app.use("/", User.LoadRouters());

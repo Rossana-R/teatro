@@ -11,6 +11,13 @@ export interface UserCreate extends UserLogin {
   createBy: string | null
 }
 
+export interface UserUpdate {
+  name: string,
+  lastname: string,
+  username: string,
+  email: string
+}
+
 export interface UserCompleted extends UserCreate {
   userId: string,
 

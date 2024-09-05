@@ -29,9 +29,15 @@ class PublicController extends BaseController {
         return res.render(`p/myevent.hbs`, Params);        
     }
 
+    public async PublicScreen(req: Request, res: Response) {
+
+        return res.render(`p/public.hbs`);
+    }
+
 
     public LoadRoutes() {
         this.router.get(`/public/event/:id`, this.MyEvent);
+        this.router.get(`/`, this.PublicScreen);
         return this.router;
     }
 }

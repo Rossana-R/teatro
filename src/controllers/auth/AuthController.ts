@@ -26,6 +26,8 @@ class AuthController extends BaseController {
         return this.router;
     }
 
+    
+
 }
 
 export default new AuthController();

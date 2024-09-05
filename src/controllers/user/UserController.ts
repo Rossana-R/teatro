@@ -92,6 +92,14 @@ class UserController extends BaseController {
         return res.render(`s/user/show.hbs`, Params);  
     }
 
+    // render profile
+    public async RenderProfile(req: Request, res: Response) {
+        const user = req.user;
+        console.log(user);
+
+        return res.render(`s/profile.hbs`)
+    }
+
     // logic register
     public async CreateUserPost(req: Request, res: Response) {
         try {
@@ -116,8 +124,49 @@ class UserController extends BaseController {
         }
     }
 
+    public async logout(req: Request, res: Response) {
+        req.logOut((err) => {
+            return res.redirect(`/`)
+        })
+    }
+
+    public async updateData(req: Request, res: Response) {
+        const user = req.user as any; 
+        await UserModel.UpdateById({data:req.body, id:user.userId});
+        req.flash(`succ`, `Datos actualizados`);
+        return res.redirect(`/profile`);
+    }
+
+    public async updatePassword(req: Request, res: Response) {
+        const {newp, old, repeat} = req.body;
+        const user = req.user as any;
+
+        const compareOld = UserModel.ComparePassword({ dbPassword:user.password, password:old });
+        if(!compareOld) {
+            req.flash(`err`,`Verifique las contraseña`);
+            return res.redirect(`/profile`);
+        }
+
+        if(newp !== repeat) {
+            req.flash(`err`,`Verifique las contraseña`);
+            return res.redirect(`/profile`);
+        }
+
+        const password = await UserModel.HashPassword({ password:newp }); 
+
+        await UserModel.UpdatePassword({ password, id:user.userId });
+
+        req.flash(`succ`,`Contraseña actualizada`);
+        return res.redirect(`/profile`)
+
+    }
+
     public LoadRouters() {
+        this.router.get(`/logout`, OnSession, this.logout);
         this.router.get(`/dashboard`, OnSession, this.DashboardController);
+        this.router.get(`/profile`, OnSession, this.RenderProfile);
+        this.router.post(`/profile/update/data`, OnSession, this.updateData);
+        this.router.post(`/profile/update/password`, OnSession, this.updatePassword);
         this.router.get(`/statictics`, OnSession, this.StaticticsController);
         this.router.get(`/user`, OnSession, this.RenderDashboard);
         this.router.get(`/user/list`, OnSession, this.RenderList);
