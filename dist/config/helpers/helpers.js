@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Helpers = {
     ifeq(path, page, options) {
         if (path === page) {
-            console.log(this);
             return options.fn(`bello`);
         }
         return options.inverse(`no bello`);
@@ -27,7 +26,6 @@ const Helpers = {
         return `<span style="color:#000">${status}</span>`;
     },
     activeArea(area, nameArea, name, options) {
-        console.log(area);
         if (area) {
             return `
                 <div class="form-group col-12 col-md-6 col-lg-4">
@@ -44,7 +42,6 @@ const Helpers = {
         `;
     },
     validEventWeeck(data, options) {
-        console.log(data);
         if (data == null || data == undefined) {
             return `
             <div class="item-timeline">

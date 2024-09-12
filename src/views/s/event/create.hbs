@@ -19,8 +19,11 @@
             </div>
             <div class="widget-content widget-content-area">
 
-                <form class="container-fluid" method="post" action="/event/create">
+                <form class="container-fluid" method="post" action="/event/create/reserved">
                     {{!-- dates --}}
+
+                    <input type="hidden" name="status" value="RESERVADO" class="form-control">
+
 
                     <div class="row">
                         <div class="form-group col-12 col-md-6 col-lg-4">

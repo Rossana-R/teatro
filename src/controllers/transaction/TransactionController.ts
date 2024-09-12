@@ -6,6 +6,7 @@ import { TransactionCreate } from "../../type/transaction";
 import TransactionInstance from "../../models/transacction/TransactionModel";
 import CategoryModel from "../../models/transacction/CategoryModel";
 import TypeModel from "../../models/transacction/TypeModel";
+import StaticticsTransaction from "../../models/statictics/StaticticsTransaction";
 // import { Languaje, TypesFlash } from "../../var";
 
 const TransactionModel = new TransactionInstance;
@@ -13,20 +14,20 @@ const TransactionModel = new TransactionInstance;
 class TransactionController extends BaseController {
 
     constructor() {
-        super()
+        super();        
     }
 
     public async RenderList(req: Request, res: Response) {
         const pag = req.query.pag | 0;
         const limit = req.query.limit | 10;
 
-        const machine = TransactionModel.GetPagination({pag, limit});
-        const countPromise = TransactionModel.CountAll();
+        const transaction = TransactionModel.GetPagination({pag, limit});
+        const countPromise = TransactionModel.CountAllTransactions({});
 
         const Params = {
-            list: await machine,
-            next: `/machine/?pag=${pag+1}`,
-            previous: pag == 0 ? null : `/machine/?pag=${pag-1}`,
+            list: await transaction,
+            next: `/transaction/?pag=${pag+1}`,
+            previous: pag == 0 ? null : `/transaction/?pag=${pag-1}`,
             count: await countPromise,
 
             nowTotal: ``,
@@ -69,6 +70,9 @@ class TransactionController extends BaseController {
             const user = req.user as UserCompleted;
             const {categoryId,date,mount,typeId,description} = req.body;
 
+            console.log(categoryId);
+            const categoryPromise = CategoryModel.GetCategoryById({ id:categoryId }); 
+
             const data: TransactionCreate = {
                 description,
                 categoryId,
@@ -77,14 +81,16 @@ class TransactionController extends BaseController {
                 typeId,
                 createId:user.userId,
             };
-            console.log(data);
+
             await TransactionModel.Create({data});
 
-            req.flash(`succ`, `Creado exitoso.`)
+            const category = await categoryPromise;
+            await StaticticsTransaction.conectOrCreate({ name:`${category?.name}`,num:data.mount });
+
+            req.flash(`succ`, `Creado exitoso.`);
             return res.redirect(`/transaction`);
 
         } catch (error) {
-            console.log(error);
             req.flash(`error`, `Error al crear.`)
             return res.redirect(`/transaction`);
         }
@@ -110,7 +116,6 @@ class TransactionController extends BaseController {
             return res.redirect(`/transaction`);
 
         } catch (error) {
-            console.log(error);
             req.flash(`error`, `Error al Crear`)
             return res.redirect(`/transaction`);
         }

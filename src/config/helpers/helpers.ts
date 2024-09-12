@@ -3,7 +3,6 @@ const Helpers = {
     ifeq(path: string, page: string, options: any) {
 
         if (path === page) {
-            console.log(this);
             return options.fn(`bello`);
           }
         return options.inverse(`no bello`);
@@ -30,7 +29,6 @@ const Helpers = {
     },
 
     activeArea(area: boolean, nameArea: string, name:string, options:any) {
-        console.log(area);
         if(area) {
             return `
                 <div class="form-group col-12 col-md-6 col-lg-4">
@@ -48,7 +46,6 @@ const Helpers = {
     },
 
     validEventWeeck(data: any | null | undefined, options: any) {
-        console.log(data);
         if(data == null || data == undefined) {
             return `
             <div class="item-timeline">

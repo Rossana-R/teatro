@@ -1,0 +1,180 @@
+{{> public/header }}
+{{> public/hero }}
+
+<link href="/bootstrap/css/tooplate-clean-work.css" rel="stylesheet">
+{{#if create}}
+
+<main class="container">
+    <div class="row">
+        <div id="basic" class="col-12 mx-auto layout-spacing mt-3">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-12">
+                            <h4>Registrar Evento el {{date}}</h4>
+                        </div>                 
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+
+                    <form class="container-fluid" method="post" action="/event/create/reserved">
+                        {{!-- dates --}}
+
+                        <div class="row">
+                            <div class="form-group col-12 col-md-6 col-lg-4">
+                                <label for="t-evname" class="">Fecha y hora de inicio</label>
+                                <input id="t-evname" type="datetime-local" name="event_datetime_time_start" class="form-control" required>
+                            </div>
+                            <div class="form-group col-12 col-md-6 col-lg-4">
+                                <label for="t-evname" class="">Fecha y hora de cierre</label>
+                                <input id="t-evname" type="datetime-local" name="event_datetime_time_end" class="form-control" required>
+                            </div>
+                        </div>
+
+                        {{!-- fullname, ci, phone, address, email --}}
+                        <div class="row mt-5">
+                            <div class="form-group col-12 col-md-6 col-lg-4">
+                                <label for="t-fullname" class="">Nombre Completo del responsable</label>
+                                <input id="t-fullname" type="text" name="fullname" class="form-control" required>
+                            </div>  
+                            <div class="form-group col-12 col-md-6 col-lg-4">
+                                <label for="t-ci" class="">Cédula de identidad</label>
+                                <input id="t-ci" type="text" name="ci" class="form-control" required>
+                            </div>  
+                            <div class="form-group col-12 col-md-6 col-lg-4">
+                                <label for="t-email" class="">Correo electrónico</label>
+                                <input id="t-email" type="email" name="email" class="form-control" required>
+                            </div>  
+                            <div class="form-group col-12 col-md-6 col-lg-4">
+                                <label for="t-phone" class="">Número de teléfono</label>
+                                <input id="t-phone" type="text" name="phone" class="form-control" required>
+                            </div>  
+                            <div class="form-group col-12 col-md-6 col-lg-4">
+                                <label for="t-address" class="">Dirección</label>
+                                <input id="t-address" type="text" name="address" class="form-control" required>
+                            </div> 
+                        </div>
+
+                        <div class="row mt-5">
+                            <div class="form-group col-12 col-md-6 col-lg-4">
+                                <label for="t-evname" class="">Nombre del evento</label>
+                                <input id="t-evname" type="text" name="event_name" class="form-control" required>
+                            </div>  
+                            <div class="form-group col-12 col-md-6 col-lg-4">
+                                <label for="t-quantity-people" class="">Cantidad de personas</label>
+                                <input id="t-quantity-people" type="text" name="event_quantity_people" class="form-control" required>
+                            </div>  
+                            
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <label for="id-evtcharacter" class="text-md text-gray-700">Caracter:</label>
+                                <select id="id-evtcharacter" name="event_character" class="form-control basic">
+                                    <option selected value="PUBLICO">selecciona una opcion</option>
+                                    <option value="APOYO">Apoyo</option>
+                                    <option value="PRIVADO">Privado</option>
+                                    <option value="ARANCEL">Arancel</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <label for="id-evtype" class="">Tipo de evento:</label>
+                                <select id="id-evtype" name="event_type" class="form-control basic">
+                                    <option selected value="PUBLICO">selecciona una opcion</option>
+                                    <option value="PUBLICO">Público</option>
+                                    <option value="PRIVADO">Privado</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-12 col-md-6 col-lg-4">
+                                <label for="t-evname" class="">Entra paga?</label>
+                                <input id="t-evname" type="checkbox" name="event_intro" class="form-control">
+                            </div>  
+                            <div class="form-group col-12 col-md-6 col-lg-4">
+                                <label for="t-cost" class="">Costo de la entrada</label>
+                                <input id="t-cost" type="number" name="event_cost" value="0" class="form-control" required>
+                            </div>   
+                        </div> 
+
+                        <div class="row">
+                            <div class="form-group col-12 col-md-6 col-lg-4">
+                                <label for="t-room" class="">Sala</label>
+                                <input id="t-room" type="checkbox" name="room" class="form-control">
+                            </div>  
+                            <div class="form-group col-12 col-md-6 col-lg-4">
+                                <label for="t-coffee" class="">Cafe/Bar</label>
+                                <input id="t-coffee" type="checkbox" name="coffee_bar" class="form-control">
+                            </div>  
+                            <div class="form-group col-12 col-md-6 col-lg-4">
+                                <label for="t-vip" class="">V.I.P</label>
+                                <input id="t-vip" type="checkbox" name="vip" class="form-control">
+                            </div>  
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Registrar Evento</button>                                                
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{{else}}
+
+    <div class="container py-3">
+        <div class="row">
+        {{#if date}} 
+            {{#if event}}
+                <div class="col-12 col-lg-6 card">
+                    <div class="card-body col-12">
+                        <div class="featured-block">
+                            <h2 class="mb-4">Si hay eventos el {{date}}</h2>
+
+                            <p>Ya hay eventos para la fecha {{date}} <a href="/">Buscar por otra fecha</a>.</p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 card px-0">
+                    <div class="card-header">
+                        <h3 class="text-center">Consulta una fecha</h3>
+                    </div>
+                    <div class="card-body">
+                        <form class="" method="GET" action="/reserved">
+                            <label for="date">Fecha</label>
+                            <input type="date" name="date" id="date" class="form-control">
+                            <input type="submit" class="btn btn-primary mt-3" />
+                        </form>
+                    </div>
+                </div>
+            {{else}}
+                <div class="col-12 col-lg-6 card">
+                    <div class="card-body col-12">
+                        <div class="featured-block">
+                            <h2 class="mb-4">No hay evento {{date}}</h2>
+                            <p>La fecha {{date}} está disponible <a href="/reserved/?create=true">Reservar evento</a>.</p>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+        {{else}}
+            <div class="container py-3">
+                <div class="col-12 col-lg-6 card px-0">
+                    <div class="card-header">
+                        <h3 class="text-center">Consulta una fecha</h3>
+                    </div>
+                    <div class="card-body">
+                        <form class="" method="GET" action="/reserved">
+                            <label for="date">Fecha</label>
+                            <input type="date" name="date" id="date" class="form-control">
+                            <input type="submit" class="btn btn-primary mt-3" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {{/if}}
+        </div>
+    </div>
+    
+{{/if}}
+
+{{> public/footer }}

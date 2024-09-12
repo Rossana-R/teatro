@@ -17,6 +17,7 @@ const auth_1 = require("../../middleware/auth");
 const TransactionModel_1 = __importDefault(require("../../models/transacction/TransactionModel"));
 const CategoryModel_1 = __importDefault(require("../../models/transacction/CategoryModel"));
 const TypeModel_1 = __importDefault(require("../../models/transacction/TypeModel"));
+const StaticticsTransaction_1 = __importDefault(require("../../models/statictics/StaticticsTransaction"));
 // import { Languaje, TypesFlash } from "../../var";
 const TransactionModel = new TransactionModel_1.default;
 class TransactionController extends BaseController_1.default {
@@ -27,12 +28,12 @@ class TransactionController extends BaseController_1.default {
         return __awaiter(this, void 0, void 0, function* () {
             const pag = req.query.pag | 0;
             const limit = req.query.limit | 10;
-            const machine = TransactionModel.GetPagination({ pag, limit });
-            const countPromise = TransactionModel.CountAll();
+            const transaction = TransactionModel.GetPagination({ pag, limit });
+            const countPromise = TransactionModel.CountAllTransactions({});
             const Params = {
-                list: yield machine,
-                next: `/machine/?pag=${pag + 1}`,
-                previous: pag == 0 ? null : `/machine/?pag=${pag - 1}`,
+                list: yield transaction,
+                next: `/transaction/?pag=${pag + 1}`,
+                previous: pag == 0 ? null : `/transaction/?pag=${pag - 1}`,
                 count: yield countPromise,
                 nowTotal: ``,
                 requirePagination: false,
@@ -72,6 +73,8 @@ class TransactionController extends BaseController_1.default {
             try {
                 const user = req.user;
                 const { categoryId, date, mount, typeId, description } = req.body;
+                console.log(categoryId);
+                const categoryPromise = CategoryModel_1.default.GetCategoryById({ id: categoryId });
                 const data = {
                     description,
                     categoryId,
@@ -80,13 +83,13 @@ class TransactionController extends BaseController_1.default {
                     typeId,
                     createId: user.userId,
                 };
-                console.log(data);
                 yield TransactionModel.Create({ data });
+                const category = yield categoryPromise;
+                yield StaticticsTransaction_1.default.conectOrCreate({ name: `${category === null || category === void 0 ? void 0 : category.name}`, num: data.mount });
                 req.flash(`succ`, `Creado exitoso.`);
                 return res.redirect(`/transaction`);
             }
             catch (error) {
-                console.log(error);
                 req.flash(`error`, `Error al crear.`);
                 return res.redirect(`/transaction`);
             }
@@ -111,7 +114,6 @@ class TransactionController extends BaseController_1.default {
                 return res.redirect(`/transaction`);
             }
             catch (error) {
-                console.log(error);
                 req.flash(`error`, `Error al Crear`);
                 return res.redirect(`/transaction`);
             }

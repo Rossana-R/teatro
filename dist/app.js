@@ -20,6 +20,7 @@ const TypeControl_1 = __importDefault(require("./controllers/transaction/type/Ty
 const CategoryController_1 = __importDefault(require("./controllers/transaction/category/CategoryController"));
 const TransactionController_1 = __importDefault(require("./controllers/transaction/TransactionController"));
 const PublicController_1 = __importDefault(require("./controllers/PublicController"));
+const TurnController_1 = __importDefault(require("./controllers/event/turn/TurnController"));
 const Statictics_1 = __importDefault(require("./controllers/API/Statictics"));
 const constant_1 = require("./constant");
 require("./config/passport");
@@ -58,13 +59,13 @@ app.use((req, res, next) => {
     next();
 });
 // Route Auth
-app.get(`/`, (req, res) => {
-    if (req.user)
-        return res.redirect(`/dashboard`);
-    res.redirect(`/login`);
-});
+// app.get(`/`, (req, res) => {
+//   if(req.user) return res.redirect(`/dashboard`);
+//   res.redirect(`/login`)
+// })
 app.use("/", AuthController_1.default.LoadRouters());
 app.use("/", UserController_1.default.LoadRouters());
+app.use(`/`, TurnController_1.default.LoadRouters());
 app.use("/", EventController_1.default.LoadRouters());
 app.use("/", Statictics_1.default.LoadRoutes());
 app.use(`/`, PublicController_1.default.LoadRoutes());
@@ -74,7 +75,6 @@ app.use(`/`, TransactionController_1.default.LoadRoutes());
 app.use("/start/user", UserController_1.default.InsertUserBase);
 app.use("/start/statictis", UserController_1.default.StartStaticticsForYear);
 // Static Files
-console.log(path_1.default.join(__dirname, "../public"));
 app.use(express_1.default.static(path_1.default.join(__dirname, "../public")));
 // Init Express
 app.listen(constant_1.PORT, () => {

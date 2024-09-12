@@ -92,6 +92,14 @@ class UserController extends BaseController_1.default {
             return res.render(`s/user/show.hbs`, Params);
         });
     }
+    // render profile
+    RenderProfile(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = req.user;
+            console.log(user);
+            return res.render(`s/profile.hbs`);
+        });
+    }
     // logic register
     CreateUserPost(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -116,8 +124,46 @@ class UserController extends BaseController_1.default {
             }
         });
     }
+    logout(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            req.logOut((err) => {
+                return res.redirect(`/`);
+            });
+        });
+    }
+    updateData(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = req.user;
+            yield UserModel_1.default.UpdateById({ data: req.body, id: user.userId });
+            req.flash(`succ`, `Datos actualizados`);
+            return res.redirect(`/profile`);
+        });
+    }
+    updatePassword(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { newp, old, repeat } = req.body;
+            const user = req.user;
+            const compareOld = UserModel_1.default.ComparePassword({ dbPassword: user.password, password: old });
+            if (!compareOld) {
+                req.flash(`err`, `Verifique las contraseña`);
+                return res.redirect(`/profile`);
+            }
+            if (newp !== repeat) {
+                req.flash(`err`, `Verifique las contraseña`);
+                return res.redirect(`/profile`);
+            }
+            const password = yield UserModel_1.default.HashPassword({ password: newp });
+            yield UserModel_1.default.UpdatePassword({ password, id: user.userId });
+            req.flash(`succ`, `Contraseña actualizada`);
+            return res.redirect(`/profile`);
+        });
+    }
     LoadRouters() {
+        this.router.get(`/logout`, auth_1.OnSession, this.logout);
         this.router.get(`/dashboard`, auth_1.OnSession, this.DashboardController);
+        this.router.get(`/profile`, auth_1.OnSession, this.RenderProfile);
+        this.router.post(`/profile/update/data`, auth_1.OnSession, this.updateData);
+        this.router.post(`/profile/update/password`, auth_1.OnSession, this.updatePassword);
         this.router.get(`/statictics`, auth_1.OnSession, this.StaticticsController);
         this.router.get(`/user`, auth_1.OnSession, this.RenderDashboard);
         this.router.get(`/user/list`, auth_1.OnSession, this.RenderList);

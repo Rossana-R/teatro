@@ -43,6 +43,25 @@ class UserModel extends BaseModel_1.default {
             return result;
         });
     }
+    UpdateById(_a) {
+        return __awaiter(this, arguments, void 0, function* ({ data, id }) {
+            this.StartPrisma();
+            const result = yield this.prisma.user.update({ data, where: { userId: id } });
+            this.DistroyPrisma();
+            return result;
+        });
+    }
+    UpdatePassword(_a) {
+        return __awaiter(this, arguments, void 0, function* ({ password, id }) {
+            this.StartPrisma();
+            const result = yield this.prisma.user.update({
+                data: { password },
+                where: { userId: id }
+            });
+            this.DistroyPrisma();
+            return result;
+        });
+    }
     // busca usuario por email
     FindUserByEmail(_a) {
         return __awaiter(this, arguments, void 0, function* ({ email }) {

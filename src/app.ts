@@ -15,6 +15,7 @@ import Type from "./controllers/transaction/type/TypeControl";
 import Category from "./controllers/transaction/category/CategoryController";
 import Transaction from "./controllers/transaction/TransactionController";
 import Public from "./controllers/PublicController";
+import Turn from "./controllers/event/turn/TurnController";
 import APIStattictics from "./controllers/API/Statictics";
 import { PORT } from "./constant";
 import "./config/passport";
@@ -65,6 +66,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use("/", Auth.LoadRouters());
 app.use("/", User.LoadRouters());
+app.use(`/`, Turn.LoadRouters());
 app.use("/", Event.LoadRouters());
 app.use("/", APIStattictics.LoadRoutes())
 app.use(`/`, Public.LoadRoutes());
@@ -78,7 +80,6 @@ app.use("/start/statictis", User.StartStaticticsForYear);
 
 
 // Static Files
-console.log(path.join(__dirname, "../public"));
 app.use(express.static(path.join(__dirname, "../public")));
 
 // Init Express

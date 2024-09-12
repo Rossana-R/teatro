@@ -50,7 +50,6 @@ class TransactionModel extends BaseModel_1.default {
             const user = this.prisma.user.findFirst({ where: { userId: result === null || result === void 0 ? void 0 : result.createId } });
             const newResult = Object.assign(Object.assign({}, result), { typeReferende: yield type, categoryReferende: yield category, createReference: yield user });
             this.DistroyPrisma();
-            console.log(newResult);
             return newResult;
         });
     }
@@ -70,7 +69,6 @@ class TransactionModel extends BaseModel_1.default {
                 take: limit,
             });
             this.DistroyPrisma();
-            console.log(result);
             return result;
         });
     }

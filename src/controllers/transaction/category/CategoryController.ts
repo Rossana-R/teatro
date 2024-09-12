@@ -20,8 +20,8 @@ class CategoryController extends BaseController {
 
         const Params = {
             list: await machine,
-            next: `/machine/?pag=${pag+1}`,
-            previous: pag == 0 ? null : `/machine/?pag=${pag-1}`,
+            next: `/transaction/category/?pag=${pag+1}`,
+            previous: pag == 0 ? null : `/transaction/category/?pag=${pag-1}`,
             count: await countPromise,
 
             nowTotal: ``,

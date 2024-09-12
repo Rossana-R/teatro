@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseController_1 = __importDefault(require("../BaseController"));
 const EventModel_1 = __importDefault(require("../../models/event/EventModel"));
+const TurnModel_1 = __importDefault(require("../../models/event/TurnModel"));
 const TransactionModel_1 = __importDefault(require("../../models/transacction/TransactionModel"));
 const auth_1 = require("../../middleware/auth");
 const TransactionModel = new TransactionModel_1.default();
@@ -42,13 +43,11 @@ class UserController extends BaseController_1.default {
             const limit = req.params.limit | 10;
             const date = req.body.date;
             const status = req.body.status;
-            console.log(`date`, date);
             const filter = {};
             if (status && status !== "ALL")
                 filter.admin_status = status;
             if (date)
                 filter.admin_date = date;
-            console.log(`filter`, filter);
             const events = EventModel_1.default.GetEvents({ pag, limit, filter });
             const countPromise = EventModel_1.default.CountBy({ filter });
             const Params = {
@@ -62,7 +61,6 @@ class UserController extends BaseController_1.default {
                 nowPathOne: pag != 0 ? true : false,
                 nowPathEnd: false,
             };
-            // console.log(Params.list);
             Params.nowTotal = `${Params.list.length + (pag * 10)} / ${Params.count}`;
             Params.nowPathEnd = (Params.list.length - 9) > 0 ? true : false;
             Params.requirePagination = Params.count > 10 ? true : false;
@@ -73,7 +71,17 @@ class UserController extends BaseController_1.default {
     RenderCreate(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const Params = {};
+            const turns = yield TurnModel_1.default.findAll({ limit: 100, pag: 1 });
+            Params.turn = turns;
             return res.render(`s/event/create.hbs`, Params);
+        });
+    }
+    RenderCreateReserved(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const Params = {};
+            const turns = yield TurnModel_1.default.findAll({ limit: 100, pag: 1 });
+            Params.turn = turns;
+            return res.render(`p/reserved.hbs`, Params);
         });
     }
     // render show and update
@@ -93,7 +101,7 @@ class UserController extends BaseController_1.default {
     CreateEventPost(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { fullname, address, ci, email, phone, event_type, event_name, event_quantity_people, event_character, event_intro, event_cost, event_datetime_time_start, event_datetime_time_end, admin_code, coffee_bar, room, vip } = req.body;
+                const { fullname, address, ci, email, phone, event_type, event_name, event_quantity_people, event_character, event_intro, event_cost, event_datetime_time_start, event_datetime_time_end, admin_code, coffee_bar, room, vip, status } = req.body;
                 const evt = {
                     fullname, address, ci, email, phone,
                     event_quantity_people: Number(event_quantity_people),
@@ -106,18 +114,19 @@ class UserController extends BaseController_1.default {
                     admin_code,
                     admin_datetime_start: event_datetime_time_start,
                     admin_datetime_end: event_datetime_time_end,
-                    admin_status: `RECIBIDO`,
+                    admin_status: status ? status : `RECIBIDO`,
                     coffe_bar: coffee_bar ? true : false,
                     room: room ? true : false,
-                    vip: vip ? true : false
+                    vip: vip ? true : false,
                 };
-                //
                 yield EventModel_1.default.CreateEvent({ data: evt });
                 req.flash(`succ`, `Evento creado`);
+                if (!req.user) {
+                    return res.redirect(`/`);
+                }
                 return res.redirect(`/event/list`);
             }
             catch (error) {
-                console.log(error);
                 req.flash(`err`, `No se pudo crear el evento.`);
                 return res.redirect(`/event/list`);
             }
@@ -183,6 +192,8 @@ class UserController extends BaseController_1.default {
         this.router.post(`/event/:id/admin`, auth_1.OnSession, this.UpdateAdmin);
         this.router.post(`/event/:id/status`, auth_1.OnSession, this.SetStateEvent);
         this.router.post(`/event/create`, auth_1.OnSession, this.CreateEventPost);
+        this.router.get(`/event/create/reserved`, this.RenderCreateReserved);
+        this.router.post(`/event/create/reserved`, this.CreateEventPost);
         this.router.post(`/event/:id/create/cancelation`, auth_1.OnSession, this.AddCancelation);
         this.router.post(`/event/:id/set/payment`, auth_1.OnSession, this.SetPayment);
         ///event/{{data.eventId}}/set/payment

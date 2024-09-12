@@ -22,7 +22,6 @@ class PublicController extends BaseController_1.default {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.params.id;
             const event = yield EventModel_1.default.FindEventById({ id });
-            console.log(event);
             const Params = {
                 data: event,
                 isEvent: true
@@ -30,12 +29,43 @@ class PublicController extends BaseController_1.default {
             if (!event) {
                 Params.isEvent = false;
             }
-            console.log(Params);
             return res.render(`p/myevent.hbs`, Params);
+        });
+    }
+    PublicScreen(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // public
+            return res.render(`p/public.hbs`);
+        });
+    }
+    ReservedScreen(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let create = req.query.create ? true : false;
+            const date = req.query.date;
+            let event = yield EventModel_1.default.FindEventToDate({ date });
+            if (date === undefined) {
+                event = null;
+            }
+            // public
+            return res.render(`p/reserved.hbs`, { create, event, date });
+        });
+    }
+    SearchScreen(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // public
+            return res.render(`p/search.hbs`);
+        });
+    }
+    RecervedDay(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return res.render(`p/reserved.hbs`);
         });
     }
     LoadRoutes() {
         this.router.get(`/public/event/:id`, this.MyEvent);
+        this.router.get(`/`, this.PublicScreen);
+        this.router.get(`/reserved`, this.ReservedScreen);
+        this.router.get(`/search`, this.SearchScreen);
         return this.router;
     }
 }

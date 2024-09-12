@@ -37,7 +37,6 @@ class BaseController {
                 return res.status(200).json({ body: listResponse });
             }
             catch (error) {
-                console.log(error);
                 return res.status(500).json({ ok: false });
             }
         });
@@ -46,7 +45,6 @@ class BaseController {
         return __awaiter(this, void 0, void 0, function* () {
             const date = new Date();
             const year = date.getFullYear();
-            console.log(year);
             const result = yield UserModel_1.default.CreateStatictisForYear({ year });
             return res.json({ body: result });
         });

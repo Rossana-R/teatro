@@ -10,7 +10,6 @@ class EventModel extends AbstractModel {
     // get users pagination
     public async GetEvents({pag, limit=10, filter}: {pag:number, limit:number, filter: any}) {
         try {
-            console.log(filter);
             this.StartPrisma();
             const result = await this.prisma.event.findMany({
                 where: filter ? filter : {},
@@ -41,9 +40,22 @@ class EventModel extends AbstractModel {
     // crea usuario
     public async CreateEvent({data}:{data:EventCreate}) {
         this.StartPrisma();
-        const result = await this.prisma.event.create({ data: {...data, admin_code:`0000-0000-0000-00`} }); 
+        const result = await this.prisma.event.create({ 
+            data: {
+                ...data, 
+                admin_code:`0000-0000-0000-00`,
+            },
+
+        }); 
         this.DistroyPrisma();
         this.StaticticsUpdate({});
+        return result;
+    }
+
+    public async FindEventToDate({date}:{date:string}) {
+        this.StartPrisma();
+        const result = await this.prisma.event.findFirst({ where:{event_datetime_date:date} });
+        this.DistroyPrisma();
         return result;
     }
 
@@ -91,7 +103,6 @@ class EventModel extends AbstractModel {
     public async CreateCancelation({data}:{data:CancelationCreate}) {
         this.StartPrisma();
         const result = this.prisma.cancelations.create({ data });
-        console.log(result);
         this.DistroyPrisma();
         return result;
     }

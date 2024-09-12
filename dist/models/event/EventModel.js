@@ -21,7 +21,6 @@ class EventModel extends BaseModel_1.default {
     GetEvents(_a) {
         return __awaiter(this, arguments, void 0, function* ({ pag, limit = 10, filter }) {
             try {
-                console.log(filter);
                 this.StartPrisma();
                 const result = yield this.prisma.event.findMany({
                     where: filter ? filter : {},
@@ -54,9 +53,19 @@ class EventModel extends BaseModel_1.default {
     CreateEvent(_a) {
         return __awaiter(this, arguments, void 0, function* ({ data }) {
             this.StartPrisma();
-            const result = yield this.prisma.event.create({ data: Object.assign(Object.assign({}, data), { admin_code: `0000-0000-0000-00` }) });
+            const result = yield this.prisma.event.create({
+                data: Object.assign(Object.assign({}, data), { admin_code: `0000-0000-0000-00` }),
+            });
             this.DistroyPrisma();
             this.StaticticsUpdate({});
+            return result;
+        });
+    }
+    FindEventToDate(_a) {
+        return __awaiter(this, arguments, void 0, function* ({ date }) {
+            this.StartPrisma();
+            const result = yield this.prisma.event.findFirst({ where: { event_datetime_date: date } });
+            this.DistroyPrisma();
             return result;
         });
     }
@@ -108,7 +117,6 @@ class EventModel extends BaseModel_1.default {
         return __awaiter(this, arguments, void 0, function* ({ data }) {
             this.StartPrisma();
             const result = this.prisma.cancelations.create({ data });
-            console.log(result);
             this.DistroyPrisma();
             return result;
         });

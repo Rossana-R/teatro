@@ -72,7 +72,22 @@ model Event {
   coffe_bar                 Boolean
   room                      Boolean
   vip                       Boolean
+
   cancelationRef            Cancelations?
+  // turnId                    String
+  // turnReference             Turn          @relation(fields: [turnId], references: [id])
+}
+
+model Turn {
+  id            String    @id     @default(uuid())
+
+  name          String
+  description   String?
+
+  time_start    String
+  time_end      String
+
+  // events        Event[]
 }
 
 model Cancelations {
@@ -144,6 +159,8 @@ model StaticticsForYear {
   staticticsForYearId         String      @id @default(uuid())
   year                        Int
 
+  objectName                  String?
+
   month1                      String      @default("1_enero")
   month2                      String      @default("2_febrero")
   month3                      String      @default("3_marzo")
@@ -169,4 +186,24 @@ model StaticticsForYear {
   octubre                     Int     @default(0)
   noviembre                   Int     @default(0)
   diciembre                   Int     @default(0)
+}
+
+model StaticticsObjectsYear {
+  staticticsForYearId         String      @id @default(uuid())
+  year                        Int
+
+  objectName                  String
+
+  total_month_1               Int     @default(0)
+  total_month_2               Int     @default(0)
+  total_month_3               Int     @default(0)
+  total_month_4               Int     @default(0)
+  total_month_5               Int     @default(0)
+  total_month_6               Int     @default(0)
+  total_month_7               Int     @default(0)
+  total_month_8               Int     @default(0)
+  total_month_9               Int     @default(0)
+  total_month_10              Int     @default(0)
+  total_month_11              Int     @default(0)
+  total_month_12              Int     @default(0)
 }

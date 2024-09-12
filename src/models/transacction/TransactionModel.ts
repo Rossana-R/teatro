@@ -43,7 +43,6 @@ class TransactionModel extends AbstractModel {
             createReference: await user,
         }
         this.DistroyPrisma();
-        console.log(newResult);
         return newResult;
     }
 
@@ -61,7 +60,6 @@ class TransactionModel extends AbstractModel {
             take: limit,
         });
         this.DistroyPrisma();
-        console.log(result);
         return result;
     }
 }
