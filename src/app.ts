@@ -15,6 +15,7 @@ import Type from "./controllers/transaction/type/TypeControl";
 import Category from "./controllers/transaction/category/CategoryController";
 import Transaction from "./controllers/transaction/TransactionController";
 import Public from "./controllers/PublicController";
+import Report from "./controllers/report/ReporController";
 import Turn from "./controllers/event/turn/TurnController";
 import APIStattictics from "./controllers/API/Statictics";
 import { PORT } from "./constant";
@@ -70,6 +71,7 @@ app.use(`/`, Turn.LoadRouters());
 app.use("/", Event.LoadRouters());
 app.use("/", APIStattictics.LoadRoutes())
 app.use(`/`, Public.LoadRoutes());
+app.use(`/`, Report.LoadRouters());
 
 app.use(`/`, Type.LoadRoutes());
 app.use(`/`, Category.LoadRoutes());

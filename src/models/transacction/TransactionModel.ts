@@ -1,6 +1,7 @@
 import { connect } from "mongoose";
 import { TransactionCreate } from "../../type/transaction";
 import AbstractModel from "../BaseModel";
+import { Prisma } from "@prisma/client";
 
 class TransactionModel extends AbstractModel {
 
@@ -61,6 +62,18 @@ class TransactionModel extends AbstractModel {
         });
         this.DistroyPrisma();
         return result;
+    }
+
+    public async ReportTransaction({skip,take,filter}:{skip:number,take:number,filter:Prisma.TransactionWhereInput}) {
+        this.StartPrisma();
+        const result = await this.prisma.transaction.findMany({
+            where: filter,
+            skip,
+            take
+        });
+        const count = await this.prisma.transaction.count({ where: filter });
+        this.DistroyPrisma();
+        return {result, count};
     }
 }
 

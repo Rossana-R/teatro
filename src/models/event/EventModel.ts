@@ -1,5 +1,6 @@
 import AbstractModel from "../BaseModel";
 import { CancelationCreate, EventCreate, RefReference } from "../../type/event";
+import { Prisma } from "@prisma/client";
 
 class EventModel extends AbstractModel {
 
@@ -122,6 +123,20 @@ class EventModel extends AbstractModel {
         })
         this.DistroyPrisma();
         return await result;
+    }
+
+    public async ReportEvent({filter, skip, take}: {filter:Prisma.EventWhereInput, skip:number, take:number}) {
+        this.StartPrisma();
+        const result = await this.prisma.event.findMany({
+            where: filter,
+            skip,
+            take
+        });
+        const count = await this.prisma.event.count({
+            where: filter
+        })
+        this.DistroyPrisma();
+        return {result,count};
     }
 }
 
