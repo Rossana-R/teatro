@@ -13,6 +13,10 @@ class PublicController extends BaseController {
 
         const event = await EventModel.FindEventById({ id });
 
+        
+
+        if(!event || event?.admin_status === `RECIBIDO`) return res.render(`p/404.hbs`); 
+
         const Params = {
             data: event,
             isEvent: true

@@ -22,6 +22,8 @@ class PublicController extends BaseController_1.default {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.params.id;
             const event = yield EventModel_1.default.FindEventById({ id });
+            if (!event || (event === null || event === void 0 ? void 0 : event.admin_status) === `RECIBIDO`)
+                return res.render(`p/404.hbs`);
             const Params = {
                 data: event,
                 isEvent: true
