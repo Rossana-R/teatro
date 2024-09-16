@@ -140,5 +140,38 @@ class EventModel extends BaseModel_1.default {
             return yield result;
         });
     }
+    UpdateDate(_a) {
+        return __awaiter(this, arguments, void 0, function* ({ date, id }) {
+            this.StartPrisma();
+            const result = this.prisma.event.update({
+                data: {
+                    admin_date: date.date_start[0],
+                    admin_datetime_end: date.date_end[0],
+                    admin_datetime_start: date.date_start[0],
+                    event_datetime_date: date.date_start[0],
+                    event_datetime_tiem_end: date.date_end[1],
+                    event_datetime_tiem_start: date.date_start[1],
+                },
+                where: { eventId: id }
+            });
+            this.DistroyPrisma();
+            return yield result;
+        });
+    }
+    ReportEvent(_a) {
+        return __awaiter(this, arguments, void 0, function* ({ filter, skip, take }) {
+            this.StartPrisma();
+            const result = yield this.prisma.event.findMany({
+                where: filter,
+                skip,
+                take
+            });
+            const count = yield this.prisma.event.count({
+                where: filter
+            });
+            this.DistroyPrisma();
+            return { result, count };
+        });
+    }
 }
 exports.default = new EventModel();

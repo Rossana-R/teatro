@@ -36,7 +36,11 @@ class CategoryModel extends TransactionModel_1.default {
     GetCategoryById(_a) {
         return __awaiter(this, arguments, void 0, function* ({ id }) {
             this.StartPrisma();
-            const result = yield this.prisma.transactionCategory.findFirst({ where: { transactionCategoryId: id },
+            console.log(`id is:`, id);
+            const result = yield this.prisma.transactionCategory.findFirst({
+                where: {
+                    transactionCategoryId: id
+                },
                 include: {
                     createReference: true
                 }

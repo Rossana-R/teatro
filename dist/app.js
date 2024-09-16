@@ -20,6 +20,7 @@ const TypeControl_1 = __importDefault(require("./controllers/transaction/type/Ty
 const CategoryController_1 = __importDefault(require("./controllers/transaction/category/CategoryController"));
 const TransactionController_1 = __importDefault(require("./controllers/transaction/TransactionController"));
 const PublicController_1 = __importDefault(require("./controllers/PublicController"));
+const ReporController_1 = __importDefault(require("./controllers/report/ReporController"));
 const TurnController_1 = __importDefault(require("./controllers/event/turn/TurnController"));
 const Statictics_1 = __importDefault(require("./controllers/API/Statictics"));
 const constant_1 = require("./constant");
@@ -69,6 +70,7 @@ app.use(`/`, TurnController_1.default.LoadRouters());
 app.use("/", EventController_1.default.LoadRouters());
 app.use("/", Statictics_1.default.LoadRoutes());
 app.use(`/`, PublicController_1.default.LoadRoutes());
+app.use(`/`, ReporController_1.default.LoadRouters());
 app.use(`/`, TypeControl_1.default.LoadRoutes());
 app.use(`/`, CategoryController_1.default.LoadRoutes());
 app.use(`/`, TransactionController_1.default.LoadRoutes());

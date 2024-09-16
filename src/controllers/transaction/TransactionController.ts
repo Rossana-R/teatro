@@ -70,7 +70,6 @@ class TransactionController extends BaseController {
             const user = req.user as UserCompleted;
             const {categoryId,date,mount,typeId,description} = req.body;
 
-            console.log(categoryId);
             const categoryPromise = CategoryModel.GetCategoryById({ id:categoryId }); 
 
             const data: TransactionCreate = {

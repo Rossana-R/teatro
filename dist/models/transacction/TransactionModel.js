@@ -72,5 +72,18 @@ class TransactionModel extends BaseModel_1.default {
             return result;
         });
     }
+    ReportTransaction(_a) {
+        return __awaiter(this, arguments, void 0, function* ({ skip, take, filter }) {
+            this.StartPrisma();
+            const result = yield this.prisma.transaction.findMany({
+                where: filter,
+                skip,
+                take
+            });
+            const count = yield this.prisma.transaction.count({ where: filter });
+            this.DistroyPrisma();
+            return { result, count };
+        });
+    }
 }
 exports.default = TransactionModel;

@@ -73,7 +73,6 @@ class TransactionController extends BaseController_1.default {
             try {
                 const user = req.user;
                 const { categoryId, date, mount, typeId, description } = req.body;
-                console.log(categoryId);
                 const categoryPromise = CategoryModel_1.default.GetCategoryById({ id: categoryId });
                 const data = {
                     description,

@@ -84,6 +84,19 @@ class UserController extends BaseController_1.default {
             return res.render(`p/reserved.hbs`, Params);
         });
     }
+    // render reprogramming
+    RenderReprogramming(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            const event = yield EventModel_1.default.FindEventById({ id });
+            if (null == event) {
+                req.flash(`err`, `Evento no encontrado.`);
+                return res.redirect(`/event/list`);
+            }
+            const Params = { data: event };
+            return res.render(`s/event/reprograming.hbs`, Params);
+        });
+    }
     // render show and update
     RenderShow(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -95,6 +108,25 @@ class UserController extends BaseController_1.default {
             }
             const Params = { data: event };
             return res.render(`s/event/show.hbs`, Params);
+        });
+    }
+    LogicReprogramming(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { event_datetime_time_start, event_datetime_time_end } = req.body;
+            const id = req.params.id;
+            const date_start = event_datetime_time_start.split(`T`);
+            const date_end = event_datetime_time_end.split(`T`);
+            const eventFoundPromise = EventModel_1.default.FindEventToDate({ date: date_start[0] });
+            const eventFound2Promise = EventModel_1.default.FindEventToDate({ date: date_end[0] });
+            const eventFound = yield eventFoundPromise;
+            const eventFound2 = yield eventFound2Promise;
+            if (eventFound || eventFound2) {
+                req.flash(`err`, `Fecha ocupada`);
+                return res.redirect(`/event/${id}/reprograming`);
+            }
+            yield EventModel_1.default.UpdateDate({ date: { date_end, date_start }, id: id });
+            req.flash(`succ`, `Evento reprogramado`);
+            return res.redirect(`/event/${id}/update`);
         });
     }
     // logic register
@@ -189,6 +221,8 @@ class UserController extends BaseController_1.default {
         this.router.post(`/event/list`, auth_1.OnSession, this.RenderList);
         this.router.get(`/event/create`, auth_1.OnSession, this.RenderCreate);
         this.router.get(`/event/:id/update`, auth_1.OnSession, this.RenderShow);
+        this.router.get(`/event/:id/reprograming`, auth_1.OnSession, this.RenderReprogramming);
+        this.router.post(`/event/:id/reprograming`, auth_1.OnSession, this.LogicReprogramming);
         this.router.post(`/event/:id/admin`, auth_1.OnSession, this.UpdateAdmin);
         this.router.post(`/event/:id/status`, auth_1.OnSession, this.SetStateEvent);
         this.router.post(`/event/create`, auth_1.OnSession, this.CreateEventPost);

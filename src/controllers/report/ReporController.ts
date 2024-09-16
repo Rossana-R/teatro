@@ -63,7 +63,6 @@ class ReportController extends BaseController {
 
         const renderFilter: {key:string,value:string}[] = [];
         const filter: Prisma.TransactionWhereInput[] = [];
-        console.clear();
         
         if(type !== ``) {
             const typePromise = await TypeModel.GetTypeById({ id:type });
@@ -75,7 +74,6 @@ class ReportController extends BaseController {
 
         if(category !== ``) {
             const categoryPromise = await CategoryModel.GetCategoryById({ id:category });
-            console.log(categoryPromise);
             if (categoryPromise) {
                 renderFilter.push({ key:`Categoria`, value:`${categoryPromise.name}` });
                 filter.push({ categoryId:categoryPromise.transactionCategoryId });
