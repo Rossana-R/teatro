@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import BaseController from "../BaseController";
 import EventModel from "../../models/event/EventModel";
+import TurnModel from "../../models/event/TurnModel";
 import TransactionInstance from "../../models/transacction/TransactionModel";
 import { OnSession } from "../../middleware/auth";
 import { CancelationCreate, EventCreate, RefReference } from "../../type/event";
@@ -35,13 +36,10 @@ class UserController extends BaseController {
         const date = req.body.date;
         const status = req.body.status;
 
-        console.log(`date`, date);
         const filter: any = {};
 
         if(status && status !== "ALL") filter.admin_status = status;
         if(date) filter.admin_date = date;
-
-        console.log(`filter`, filter);
 
         const events = EventModel.GetEvents({pag, limit, filter});
         const countPromise = EventModel.CountBy({ filter });
@@ -59,8 +57,6 @@ class UserController extends BaseController {
             nowPathEnd: false,
         }
 
-        // console.log(Params.list);
-
         Params.nowTotal = `${Params.list.length+(pag*10)} / ${Params.count}`;
         Params.nowPathEnd = (Params.list.length-9)>0 ? true : false;
         
@@ -71,9 +67,23 @@ class UserController extends BaseController {
 
     // render create
     public async RenderCreate(req: Request, res: Response) {
-        const Params = {}
+        const Params: any = {};
+
+        const turns = await TurnModel.findAll({ limit:100, pag:1 });
+
+        Params.turn = turns;
 
         return res.render(`s/event/create.hbs`, Params);  
+    }
+
+    public async RenderCreateReserved(req: Request, res: Response) {
+        const Params: any = {};
+
+        const turns = await TurnModel.findAll({ limit:100, pag:1 });
+
+        Params.turn = turns;
+
+        return res.render(`p/reserved.hbs`, Params);  
     }
 
     // render show and update
@@ -103,7 +113,9 @@ class UserController extends BaseController {
     
                 admin_code,
     
-                coffee_bar, room, vip
+                coffee_bar, room, vip,
+
+                status
             } = req.body;
 
             
@@ -122,21 +134,24 @@ class UserController extends BaseController {
                 admin_code, 
                 admin_datetime_start: event_datetime_time_start, 
                 admin_datetime_end: event_datetime_time_end, 
-                admin_status: `RECIBIDO`,
+                admin_status: status ? status : `RECIBIDO`,
     
                 
                 coffe_bar: coffee_bar ? true : false,
                 room: room ? true : false,
-                vip: vip ? true : false
+                vip: vip ? true : false,                
             }
 
-            //
             await EventModel.CreateEvent({ data:evt })
             req.flash(`succ`, `Evento creado`);
+
+            if(!req.user) {
+                return res.redirect(`/`);
+            }
+
             return res.redirect(`/event/list`);
 
         } catch (error) {
-            console.log(error);
             req.flash(`err`, `No se pudo crear el evento.`);
             return res.redirect(`/event/list`);
         }
@@ -205,6 +220,10 @@ class UserController extends BaseController {
         this.router.post(`/event/:id/admin`, OnSession, this.UpdateAdmin);
         this.router.post(`/event/:id/status`, OnSession, this.SetStateEvent);
         this.router.post(`/event/create`, OnSession, this.CreateEventPost);
+
+        this.router.get(`/event/create/reserved`, this.RenderCreateReserved);
+        this.router.post(`/event/create/reserved`, this.CreateEventPost);
+
         this.router.post(`/event/:id/create/cancelation`, OnSession, this.AddCancelation);
         this.router.post(`/event/:id/set/payment`, OnSession, this.SetPayment);
 

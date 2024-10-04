@@ -1,4 +1,4 @@
-import { UserCreate } from "../../type/user.d";
+import { UserCreate, UserUpdate } from "../../type/user.d";
 import AbstractModel from "../BaseModel";
 
 class UserModel extends AbstractModel {
@@ -27,6 +27,23 @@ class UserModel extends AbstractModel {
         const result = await this.prisma.user.create({data}); 
         this.DistroyPrisma();
         // this.StaticticsUpdate({});
+        return result;
+    }
+
+    public async UpdateById({data,id}:{data:UserUpdate,id:string}) {
+        this.StartPrisma();
+        const result = await this.prisma.user.update({data, where:{userId:id}}); 
+        this.DistroyPrisma();
+        return result;
+    }
+
+    public async UpdatePassword({password,id}:{password:string,id:string}) {
+        this.StartPrisma();
+        const result = await this.prisma.user.update({
+            data: { password },
+            where: {userId:id}
+        });
+        this.DistroyPrisma();
         return result;
     }
 

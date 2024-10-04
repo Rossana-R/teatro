@@ -1,5 +1,6 @@
 import AbstractModel from "../BaseModel";
 import { CancelationCreate, EventCreate, RefReference } from "../../type/event";
+import { Prisma } from "@prisma/client";
 
 class EventModel extends AbstractModel {
 
@@ -10,7 +11,6 @@ class EventModel extends AbstractModel {
     // get users pagination
     public async GetEvents({pag, limit=10, filter}: {pag:number, limit:number, filter: any}) {
         try {
-            console.log(filter);
             this.StartPrisma();
             const result = await this.prisma.event.findMany({
                 where: filter ? filter : {},
@@ -41,9 +41,22 @@ class EventModel extends AbstractModel {
     // crea usuario
     public async CreateEvent({data}:{data:EventCreate}) {
         this.StartPrisma();
-        const result = await this.prisma.event.create({ data: {...data, admin_code:`0000-0000-0000-00`} }); 
+        const result = await this.prisma.event.create({ 
+            data: {
+                ...data, 
+                admin_code:`0000-0000-0000-00`,
+            },
+
+        }); 
         this.DistroyPrisma();
         this.StaticticsUpdate({});
+        return result;
+    }
+
+    public async FindEventToDate({date}:{date:string}) {
+        this.StartPrisma();
+        const result = await this.prisma.event.findFirst({ where:{event_datetime_date:date} });
+        this.DistroyPrisma();
         return result;
     }
 
@@ -91,7 +104,6 @@ class EventModel extends AbstractModel {
     public async CreateCancelation({data}:{data:CancelationCreate}) {
         this.StartPrisma();
         const result = this.prisma.cancelations.create({ data });
-        console.log(result);
         this.DistroyPrisma();
         return result;
     }
@@ -111,6 +123,20 @@ class EventModel extends AbstractModel {
         })
         this.DistroyPrisma();
         return await result;
+    }
+
+    public async ReportEvent({filter, skip, take}: {filter:Prisma.EventWhereInput, skip:number, take:number}) {
+        this.StartPrisma();
+        const result = await this.prisma.event.findMany({
+            where: filter,
+            skip,
+            take
+        });
+        const count = await this.prisma.event.count({
+            where: filter
+        })
+        this.DistroyPrisma();
+        return {result,count};
     }
 }
 

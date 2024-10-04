@@ -15,6 +15,8 @@ import Type from "./controllers/transaction/type/TypeControl";
 import Category from "./controllers/transaction/category/CategoryController";
 import Transaction from "./controllers/transaction/TransactionController";
 import Public from "./controllers/PublicController";
+import Report from "./controllers/report/ReporController";
+import Turn from "./controllers/event/turn/TurnController";
 import APIStattictics from "./controllers/API/Statictics";
 import { PORT } from "./constant";
 import "./config/passport";
@@ -58,16 +60,18 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // Route Auth
-app.get(`/`, (req, res) => {
-  if(req.user) return res.redirect(`/dashboard`);
-  res.redirect(`/login`)
-})
+// app.get(`/`, (req, res) => {
+//   if(req.user) return res.redirect(`/dashboard`);
+//   res.redirect(`/login`)
+// })
 
 app.use("/", Auth.LoadRouters());
 app.use("/", User.LoadRouters());
+app.use(`/`, Turn.LoadRouters());
 app.use("/", Event.LoadRouters());
 app.use("/", APIStattictics.LoadRoutes())
 app.use(`/`, Public.LoadRoutes());
+app.use(`/`, Report.LoadRouters());
 
 app.use(`/`, Type.LoadRoutes());
 app.use(`/`, Category.LoadRoutes());
@@ -78,7 +82,6 @@ app.use("/start/statictis", User.StartStaticticsForYear);
 
 
 // Static Files
-console.log(path.join(__dirname, "../public"));
 app.use(express.static(path.join(__dirname, "../public")));
 
 // Init Express

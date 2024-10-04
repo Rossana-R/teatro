@@ -23,7 +23,11 @@ class CategoryModel extends TrasactionModel {
 
     public async GetCategoryById({ id }: {id:string}) {
         this.StartPrisma();
-        const result = await this.prisma.transactionCategory.findFirst({ where:{transactionCategoryId:id}, 
+        console.log(`id is:`, id);
+        const result = await this.prisma.transactionCategory.findFirst({ 
+            where:{
+                transactionCategoryId:id
+            }, 
             include:{
                 createReference:true
             }

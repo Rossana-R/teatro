@@ -28,7 +28,6 @@ class BaseController {
             
             return res.status(200).json({body:listResponse});
         } catch (error) {
-            console.log(error);
             return res.status(500).json({ok:false});   
         }
     }
@@ -36,7 +35,6 @@ class BaseController {
     public async StartStaticticsForYear(req: Request, res: Response) {
         const date = new Date();
         const year = date.getFullYear();
-        console.log(year);
 
         const result = await UserModel.CreateStatictisForYear({ year });
 
