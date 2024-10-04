@@ -3,4 +3,4 @@ node_modules/
 prisma/migrations
 prisma/dev.db
 prisma/dev.db-journal
-public/docs/report/*.pdf
+public/docs/report/
