@@ -125,6 +125,23 @@ class EventModel extends AbstractModel {
         return await result;
     }
 
+    public async UpdateDate({ date, id }: {date:{date_start:string[],date_end:string[]}, id:string}) {
+        this.StartPrisma();
+        const result = this.prisma.event.update({
+            data:{
+                admin_date: date.date_start[0],
+                admin_datetime_end: date.date_end[0],
+                admin_datetime_start: date.date_start[0],
+                event_datetime_date: date.date_start[0],
+                event_datetime_tiem_end: date.date_end[1],
+                event_datetime_tiem_start: date.date_start[1],
+            },
+            where: {eventId:id}
+        })
+        this.DistroyPrisma();
+        return await result;
+    }
+
     public async ReportEvent({filter, skip, take}: {filter:Prisma.EventWhereInput, skip:number, take:number}) {
         this.StartPrisma();
         const result = await this.prisma.event.findMany({

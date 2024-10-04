@@ -54,6 +54,13 @@ class TransactionModel extends AbstractModel {
         return result;
     } 
 
+    public async CountAllBy({ filter }:{filter:Prisma.TransactionWhereInput}) {
+        this.StartPrisma();
+        const result = await this.prisma.transaction.count({where:filter});
+        this.DistroyPrisma();
+        return result;
+    } 
+
     public async GetPagination({ pag, limit }: {pag:number, limit:number}) {
         this.StartPrisma();
         const result = await this.prisma.transaction.findMany({

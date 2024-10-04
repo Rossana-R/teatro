@@ -86,6 +86,20 @@ class UserController extends BaseController {
         return res.render(`p/reserved.hbs`, Params);  
     }
 
+    // render reprogramming
+    public async RenderReprogramming(req: Request, res: Response) {
+        const id = req.params.id;
+        const event = await EventModel.FindEventById({id});
+
+        if(null == event) {
+            req.flash(`err`, `Evento no encontrado.`);
+            return res.redirect(`/event/list`);
+        }
+
+        const Params = {data:event};
+        return res.render(`s/event/reprograming.hbs`, Params);  
+    }
+
     // render show and update
     public async RenderShow(req: Request, res: Response) {
         const id = req.params.id;
@@ -98,6 +112,28 @@ class UserController extends BaseController {
 
         const Params = {data:event};
         return res.render(`s/event/show.hbs`, Params);  
+    }
+
+    public async LogicReprogramming(req: Request, res: Response) {
+        const {event_datetime_time_start,event_datetime_time_end} = req.body;
+        const id = req.params.id;
+
+        const date_start = event_datetime_time_start.split(`T`);
+        const date_end = event_datetime_time_end.split(`T`);
+        const eventFoundPromise = EventModel.FindEventToDate({date:date_start[0]});
+        const eventFound2Promise = EventModel.FindEventToDate({date:date_end[0]});
+
+        const eventFound = await eventFoundPromise;
+        const eventFound2 = await eventFound2Promise;
+        
+        if(eventFound || eventFound2) {
+            req.flash(`err`, `Fecha ocupada`);
+            return res.redirect(`/event/${id}/reprograming`);
+        }
+
+        await EventModel.UpdateDate({ date:{date_end,date_start}, id:id });
+        req.flash(`succ`, `Evento reprogramado`);
+        return res.redirect(`/event/${id}/update`);
     }
 
     // logic register
@@ -216,6 +252,9 @@ class UserController extends BaseController {
         this.router.post(`/event/list`, OnSession, this.RenderList);
         this.router.get(`/event/create`, OnSession, this.RenderCreate);
         this.router.get(`/event/:id/update`, OnSession, this.RenderShow);
+        this.router.get(`/event/:id/reprograming`, OnSession, this.RenderReprogramming);
+
+        this.router.post(`/event/:id/reprograming`, OnSession, this.LogicReprogramming);
 
         this.router.post(`/event/:id/admin`, OnSession, this.UpdateAdmin);
         this.router.post(`/event/:id/status`, OnSession, this.SetStateEvent);

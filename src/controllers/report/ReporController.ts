@@ -6,6 +6,7 @@ import CategoryModel from "../../models/transacction/CategoryModel";
 import TransactionInstance from "../../models/transacction/TransactionModel";
 import { OnSession } from "../../middleware/auth";
 import { Prisma } from "@prisma/client";
+import { pushPdf } from "../../models/pdf/GeneratePDFkit";
 
 const TransactionModel = new TransactionInstance();
 
@@ -16,35 +17,60 @@ class ReportController extends BaseController {
         const skip = req.query.skip ? Number(req.query.skip) : 0; 
         const take = req.query.take ? Number(req.query.take) : 50; 
 
-        const month = req.query.month ? `${req.query.month}` : ``;
-        const status = req.query.status ? `${req.query.status}` : ``;
+        const status = req.query.status;
+        const month = req.query.month;
 
-        const renderFilter: {key:string,value:string}[] = [];
-
+        const fitlerRender: string[] = [];
         const filter: Prisma.EventWhereInput[] = [];
         
-        if (month !== ``) {
-            renderFilter.push({ key:`Mes`, value:`${month}` });
-            filter.push({ admin_date: { contains:`-${month}-` } }); 
+        if(status) { 
+            filter.push({ admin_status:status });
+            fitlerRender.push(`Estado: ${status}`);
+        } else {
+            fitlerRender.push(`Estado: TODOS`);
         }
-        
-        if (status !== ``)  {
-            renderFilter.push({ key:`Estado`, value:`${status}` });
-            filter.push({ admin_status: { contains:status } });
+        if(month) { 
+            filter.push({ admin_date:{ contains:`-${month}-` } });
+            fitlerRender.push(`Mes: ${month}`);
+        } else {
+            fitlerRender.push(`Mes: TODOS`);
         }
 
-        const result = await EventModel.ReportEvent({
-            filter: {
-                AND: filter
-            },
-            skip,
-            take
+        const count = await EventModel.CountBy({ filter:{AND:filter} });
+        let pagTake = 20;
+        const headers = [``,`fecha`, `Responsable`, `Estado`, `Caracter`];
+        const rows: string[][] = [];
+
+        let i = 0;
+        do {
+            const result = await EventModel.ReportEvent({
+                filter: {
+                    AND: filter
+                },
+                skip:pagTake-20,
+                take:pagTake
+            });
+
+            result.result.forEach((item,i)=>{
+                rows.push([i.toString(),`${item.admin_date}`,`${item.fullname}`,`${item.admin_status}`,`${item.event_character}`]);
+            });            
+
+            i++;
+        } while (count>pagTake);    
+
+        const pdf = await pushPdf({
+            headers,
+            rows,
+            title:`Reporte`,
+            filter: fitlerRender,
+            count
         });
 
         return res.render(`s/report/event.hbs`, {
-            result:result.result,
-            count:result.count,
-            filter:renderFilter
+            // result:result.result,
+            count:count,
+            file: pdf,
+            filter: fitlerRender,
         });
     }
 
@@ -56,46 +82,69 @@ class ReportController extends BaseController {
         const skip = req.query.skip ? Number(req.query.skip) : 0; 
         const take = req.query.take ? Number(req.query.take) : 50; 
 
-        const date = req.query.date ? `${req.query.date}` : ``;
-        const month = req.query.month ? `${req.query.month}` : ``;
-        const type = req.query.type ? `${req.query.type}` : ``;
-        const category = req.query.category ? `${req.query.category}` : ``;
+        // const status = req.query.status;
+        const date = req.query.date;
+        const type = req.query.type;
+        const category = req.query.category;
 
-        const renderFilter: {key:string,value:string}[] = [];
+        const fitlerRender: string[] = [];
         const filter: Prisma.TransactionWhereInput[] = [];
-        console.clear();
+
+        if(category && type) {
+            const typeResult = await TypeModel.GetTypeById({ id:type })
+            const categoryResult = await CategoryModel.GetCategoryById({ id:category });
+
+            filter.push({ AND:[{categoryId:category},{typeId:type}] });
+            fitlerRender.push(`Tipo: ${typeResult?.name}`);
+            fitlerRender.push(`Categoria: ${categoryResult?.name}`);
+
+
+        }
+        else {
+            if(type) { 
+                const result = await TypeModel.GetTypeById({ id:type })
+                filter.push({ typeId:type });
+                fitlerRender.push(`Tipo: ${result?.name}`);
+            } else {
+                fitlerRender.push(`Tipo: TODOS`);
+            }
+
+            if(category) { 
+                const result = await CategoryModel.GetCategoryById({ id:category });
+                filter.push({ categoryId:category });
+                fitlerRender.push(`Categoria: ${result?.name}`);
+            } else {
+                fitlerRender.push(`Categoria: TODOS`);
+            }
+        }
         
-        if(type !== ``) {
-            const typePromise = await TypeModel.GetTypeById({ id:type });
-            if (typePromise) {
-                renderFilter.push({ key:`Tipo`, value:`${typePromise.name}` });
-                filter.push({ typeId:typePromise.transactionTypeId });
-            }
-        }
+        const count = await TransactionModel.CountAllBy({ filter:{AND:filter} });
+        let pagTake = 20;
+        const headers = [``,`Descripción`, `Monto`, `Fecha`];
+        const rows: string[][] = [];
 
-        if(category !== ``) {
-            const categoryPromise = await CategoryModel.GetCategoryById({ id:category });
-            console.log(categoryPromise);
-            if (categoryPromise) {
-                renderFilter.push({ key:`Categoria`, value:`${categoryPromise.name}` });
-                filter.push({ categoryId:categoryPromise.transactionCategoryId });
-            }
-        }
+        let i = 0;
+        do {
+            const result = await TransactionModel.ReportTransaction({
+                filter: filter.length > 1 ? { AND:filter } : filter[0],
+                skip:pagTake-20,
+                take:pagTake
+            });
 
-        if (month !== ``) {
-            renderFilter.push({ key:`Mes`, value:`${month}` });
-            filter.push({ date: { contains:`-${month}-` } });
-        }
+            result.result.forEach((item,i)=>{
+                rows.push([i.toString(),`${item.description}`,`${item.mount}`,`${item.date}`]);
+            });            
 
-        if (date !== ``) {
-            renderFilter.push({ key:`Fecha`, value:`${date}` });
-            filter.push({ date: { equals:date } });
-        }
+            i++;
+        } while (count>pagTake);    
 
-        console.log(req.query);
-        console.log(renderFilter);
-        console.log(`category`);
-        console.log(category);
+        const pdf = await pushPdf({
+            headers,
+            rows,
+            title:`Reporte`,
+            filter: fitlerRender,
+            count
+        });
 
         const result = await TransactionModel.ReportTransaction({
             filter: {
@@ -106,9 +155,9 @@ class ReportController extends BaseController {
         });
 
         return res.render(`s/report/transaction.hbs`, {
-            result:result.result,
-            count:result.count,
-            filter:renderFilter,
+            file: pdf,
+            filter: fitlerRender,
+            count,
             type: await TypePromise,
             category: await CategoryPromise,
         });

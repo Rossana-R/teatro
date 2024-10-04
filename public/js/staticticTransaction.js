@@ -5,8 +5,6 @@ async function LoadStaticForYear() {
     const data = await fetch(`/api/statictics/transaction`);
     const {label,series} = await data.json();
 
-    console.log(series);
-
     const d_1options1 = {
         chart: {
             height: 350,
