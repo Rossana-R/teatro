@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import EventModel from "../models/event/EventModel";
 import BaseController from "./BaseController";
+import { pushPdf } from "../models/pdf/GeneratePDFkit";
 
 class PublicController extends BaseController {
 
@@ -12,8 +13,6 @@ class PublicController extends BaseController {
         const id = req.params.id;
 
         const event = await EventModel.FindEventById({ id });
-
-        
 
         if(!event || event?.admin_status === `RECIBIDO`) return res.render(`p/404.hbs`); 
 
@@ -30,7 +29,8 @@ class PublicController extends BaseController {
     }
 
     public async PublicScreen(req: Request, res: Response) {
-        
+        // pushPdf();
+
         // public
         return res.render(`p/public.hbs`);
     }
