@@ -13,15 +13,15 @@ https://www.tooplate.com/view/2132-clean-work
 -----------------------------------------*/
 :root {
   --white-color:                  #ffffff;
-  --primary-color:                #7cb8eb;
-  --secondary-color:              #4f83d1;
+  --primary-color:                #410800;
+  --secondary-color:              #696969;
   --section-bg-color:             #f0f8ff;
-  --custom-btn-bg-color:          #4f83d1;
-  --custom-btn-bg-hover-color:    #7cb8eb;
+  --custom-btn-bg-color:          #770e00;
+  --custom-btn-bg-hover-color:    #410800;
   --dark-color:                   #000000;
   --p-color:                      #717275;
   --border-color:                 #e9eaeb;
-  --link-hover-color:             #4f83d1;
+  --link-hover-color:             #770e00;
 
   --body-font-family:             'Poppins', sans-serif;
 

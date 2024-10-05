@@ -117,7 +117,7 @@ class ReportController extends BaseController {
                 fitlerRender.push(`Categoria: TODOS`);
             }
         }
-        
+
         const count = await TransactionModel.CountAllBy({ filter:{AND:filter} });
         let pagTake = 20;
         const headers = [``,`Descripción`, `Monto`, `Fecha`];

@@ -6,6 +6,8 @@
 <div class="container" id="elementHTML">
     <div class="row">
         <div class="col-12 card mx-auto">
+            <input type="hidden" id="idToShared" value="{{data.eventId}}" />
+            <button class="btn btn-primary" id="btnToShared">Compartir</button>
             <div class="card-body">
                 <h4 class="">Fecha y hora:</h4>
                 <table class="tablePDF table table-sm table-striped">
@@ -111,6 +113,18 @@
     </div>
 </div>
 
+<script>
+    const element = document.getElementById(`btnToShared`);
+
+    console.log(element);
+    element.addEventListener(`click`, async () => {
+        const doc = document.getElementById(`idToShared`).value;
+        const test = window.location.host //.hostname;
+        await navigator.clipboard.writeText(`${test}/public/event/${doc}`);
+        element.textContent = `Copiado`; 
+    })
+
+</script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
@@ -133,10 +147,10 @@
         };
 
         pdf.fromHTML(
-            source, 
+            source,
             margins.left, // x coord
             margins.top, { // y coord
-                'width': margins.width, 
+                'width': margins.width,
                 'elementHandlers': specialElementHandlers
             },
 
@@ -146,3 +160,5 @@
         );
     }
 </script>
+
+
