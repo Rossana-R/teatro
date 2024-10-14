@@ -155,6 +155,11 @@ class EventModel extends AbstractModel {
         this.DistroyPrisma();
         return {result,count};
     }
+
+    // public async ReportOneEvent ({id}:{id:string}) {
+    //     this.StartPrisma();
+    //     const result = this.prisma.user.
+    // }
 }
 
 export default new EventModel();

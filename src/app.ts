@@ -18,6 +18,7 @@ import Public from "./controllers/PublicController";
 import Report from "./controllers/report/ReporController";
 import Turn from "./controllers/event/turn/TurnController";
 import APIStattictics from "./controllers/API/Statictics";
+import ReporController from "./controllers/API/Report";
 import { PORT } from "./constant";
 import "./config/passport";
 
@@ -76,6 +77,8 @@ app.use(`/`, Report.LoadRouters());
 app.use(`/`, Type.LoadRoutes());
 app.use(`/`, Category.LoadRoutes());
 app.use(`/`, Transaction.LoadRoutes());
+
+app.use(`/`, ReporController.LoadRoutes());
 
 app.use("/start/user", User.InsertUserBase);
 app.use("/start/statictis", User.StartStaticticsForYear);

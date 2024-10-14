@@ -1,7 +1,7 @@
 
-<a href="javascript:pruebaDivAPdf()" class="btn btn-danger" id="DownloadPDF">
+<button class="btn btn-danger" id="DownloadPDF">
     <i class="bi bi-pdf">Descardar pdf</i>
-</a>
+</button>
 
 <div class="container" id="elementHTML">
     <div class="row">
@@ -114,11 +114,27 @@
 </div>
 
 <script>
-    const element = document.getElementById(`btnToShared`);
+    const doc = document.getElementById(`idToShared`).value;
+    const DownloadPDF = document.getElementById(`DownloadPDF`);
 
-    console.log(element);
+    DownloadPDF.addEventListener(`click`, () => exceuteReport());
+
+    const exceuteReport = async () => {
+        const id = doc;
+
+        fetch(`/api/report/event/${id}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);  
+                window.open(`${data.file}`);
+            })
+            .catch(err => console.error(err))
+            ;
+
+    }
+
+    const element = document.getElementById(`btnToShared`);
     element.addEventListener(`click`, async () => {
-        const doc = document.getElementById(`idToShared`).value;
         const test = window.location.host //.hostname;
         await navigator.clipboard.writeText(`${test}/public/event/${doc}`);
         element.textContent = `Copiado`; 
@@ -127,38 +143,8 @@
 </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
 <script>
-    function pruebaDivAPdf() {
-        const pdf = new jsPDF('p', 'pt', 'letter');
-        source = $('#elementHTML')[0];
 
-        specialElementHandlers = {
-            '#bypassme': function (element, renderer) {
-                return true
-            }
-        };
-        margins = {
-            top: 80,
-            bottom: 60,
-            left: 40,
-            width: 522
-        };
-
-        pdf.fromHTML(
-            source,
-            margins.left, // x coord
-            margins.top, { // y coord
-                'width': margins.width,
-                'elementHandlers': specialElementHandlers
-            },
-
-            function (dispose) {
-                pdf.save('Prueba.pdf');
-            }, margins
-        );
-    }
 </script>
 
 

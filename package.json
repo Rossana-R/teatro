@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ironsoftware/ironpdf": "^2024.9.1",
     "@prisma/client": "^5.15.0",
     "@types/connect-flash": "^0.0.40",
     "@types/express-session": "^1.18.0",
