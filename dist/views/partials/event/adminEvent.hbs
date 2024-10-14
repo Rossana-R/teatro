@@ -1,0 +1,43 @@
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 card mx-auto">
+            <div class="card-body">
+                <h4 class="">Estado</h4>
+                <div class="container">
+                    <div class="row">
+                        <form method="post" action="/event/{{data.eventId}}/status?status=CANCELADO" class="col-6 col-md-4 col-lg-3">
+                            <button type="submit" class="btn btn-lg" style="background: #212529;color: #e1e5e9;"><b>CANCELAR</b></button>
+                        </form>
+                        <form method="post" action="/event/{{data.eventId}}/status?status=APROBADO" class="col-6 col-md-4 col-lg-3">
+                            <button type="submit" class="btn btn-lg" style="background: #21a529;color: #e1e5e9;"><b>APROBAR</b></button>
+                        </form>
+                        <form method="post" action="/event/{{data.eventId}}/status?status=FINALIZADO" class="col-6 col-md-4 col-lg-3">
+                            <button type="submit" class="btn btn-lg" style="background: #0e58e2;color: #e1e5e9;"><b>FINALIZAR</b></button>
+                        </form>
+                        <a href="/event/{{data.eventId}}/reprograming" class="col-6 col-md-4 col-lg-3 btn btn-lg btn-warning"><b>REPROGRAMAR</b></a>
+                        {{!-- <form class="col-6 col-md-4 col-lg-3">
+                            <button type="submit" class="btn btn-lg" style="background: #e0cb0b;color: #f1f5f9;"><b>REPROGRAMAR</b></button>
+                        </form> --}}
+                    </div>
+                </div>
+
+                <h4 class="mt-5">Administración</h4>
+                <form method="post" action="/event/{{data.eventId}}/admin" class="col-12">
+
+                    <div class="form-group col-12 col-md-6">
+                        <label for="t-coment" class="">Observación</label>
+                        <textarea id="t-coment" name="admin_observation" class="form-control">{{data.admin_observation}}</textarea>
+                    </div> 
+
+                    <div class="form-group col-12 col-md-6">
+                        <label for="t-code" class="">Código de reservación</label>
+                        <input type="text" id="t-code" name="admin_code" class="form-control" value="{{data.admin_code}}">
+                    </div> 
+
+                    <button type="submit" class="btn btn-primary">actualizar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

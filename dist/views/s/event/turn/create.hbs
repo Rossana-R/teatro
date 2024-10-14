@@ -1,0 +1,53 @@
+
+<div class="row">
+    <div class="col-10">.</div>
+    <div class="col-2">
+        <a href="/event/list" class="bg-primary px-3 py-1 rounded">
+            <i class="bi bi-box-arrow-left"></i>
+            lista
+        </a>
+    </div>
+
+    <div id="basic" class="col-12 mx-auto layout-spacing mt-3">
+        <div class="statbox widget box box-shadow">
+            <div class="widget-header">
+                <div class="row">
+                    <div class="col-12">
+                        <h4>Registrar Turno</h4>
+                    </div>                 
+                </div>
+            </div>
+            <div class="widget-content widget-content-area">
+
+                <form class="container-fluid" method="post" action="/turn">
+                    {{!-- dates --}}
+
+                    <div class="row">
+                        <div class="form-group col-12 col-md-6 col-lg-4">
+                            <label for="t-evstartime" class="">Hora de inicio</label>
+                            <input id="t-evstartime" type="datetime-local" name="time_start" class="form-control" required>
+                        </div>
+                        <div class="form-group col-12 col-md-6 col-lg-4">
+                            <label for="t-evendtime" class="">Hora de cierre</label>
+                            <input id="t-evendtime" type="datetime-local" name="time_end" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="form-group col-12 col-md-6 col-lg-4">
+                            <label for="t-evname" class="">Nombre</label>
+                            <input id="t-evname" type="text" name="name" class="form-control" required>
+                        </div>  
+                        <div class="form-group col-12 col-md-6 col-lg-4">
+                            <label for="t-evdescription" class="">Descripción</label>
+                            <input id="t-evdescription" type="text" name="description" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Registrar Evento</button>                                                
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

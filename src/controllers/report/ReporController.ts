@@ -12,7 +12,6 @@ const TransactionModel = new TransactionInstance();
 
 class ReportController extends BaseController {
 
-
     public async HandleEventReport(req: Request, res: Response) {
         const skip = req.query.skip ? Number(req.query.skip) : 0; 
         const take = req.query.take ? Number(req.query.take) : 50; 
