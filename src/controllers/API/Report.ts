@@ -116,10 +116,11 @@ class ReportController extends BaseController {
             doc.font(`Courier-Bold`);
             doc.text(`IMPORTANTE`, 50, nowTop+270, {  });
 
+            nowTop += 270;
             doc.text(
                 `LA ADMINISTRACIÓN DEL TEATRO NO SE HACE RESPONSABLE POR LA PERDIDA O EXTRAVIO DE OBJETOS Y PERTENECIAS DURANTE EL EVENTO, ASÍ MISMO, NO REALIZA REEMBOLSO DE DINERO CUANDO EL CONTRATANTE REALIZA CAMBIOS DE RECHA Y/0 NO REALIZA EL EVENTO EN LA FECHA PAUTADA; TAMPOCO SI EL CONTRATANTE EXCEDE EL LIMITE DE 90 DÍAS LUEGO DE LA FECHA ACORDAD EN ESTA FICHA. CABE SEÑALAR QUE PASADO LOS NOVENTA DÍAS EL CONTRATANTE PUEDE RENEGOCIAR LOS TERMINOS PARA AJUSTAR EL MONTO DE ARANCEL ES NECESARIO DETACAR QUE SI EL CONTRATANTE INFRINGE EN ALGUNO DE LOS TÉRMINOS SEÑALADOS EN LA FICHA, LA ADMINISTRACIÓN DEL TEATRO DISUELVE TODO COMPROMISO CON EL CONTRATANDE DE FORMA INMEDIATA.`,
                 30, 
-                60, 
+                nowTop+60, 
                 { align:"center",width:doc.page.width-60 }
             );
 
@@ -130,11 +131,11 @@ class ReportController extends BaseController {
                 { width:doc.page.width-90 }
             );
 
-            doc.text(`POR EL TEATRO`, 30, 230, {  });
-            doc.text(`CONTRATANTE O RESPONSABLE`, 330, 230, {  });
+            doc.text(`POR EL TEATRO`, 30, 180+30, {  });
+            doc.text(`CONTRATANTE O RESPONSABLE`, 330, 180+30, {  });
 
-            doc.text(`_______________________________________`, 30, 280, {  });
-            doc.text(`_______________________________________`, 330, 280, {  });
+            doc.text(`_______________________________________`, 30, 180+100, {  });
+            doc.text(`_______________________________________`, 330, 180+100, {  });
             doc.font(`Times-Roman`);
 
 
