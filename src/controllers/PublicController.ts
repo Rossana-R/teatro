@@ -59,7 +59,6 @@ class PublicController extends BaseController {
         return res.render(`p/reserved.hbs`)
     }
 
-
     public LoadRoutes() {
         this.router.get(`/public/event/:id`, this.MyEvent);
         this.router.get(`/`, this.PublicScreen);
