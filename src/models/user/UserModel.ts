@@ -26,7 +26,6 @@ class UserModel extends AbstractModel {
         this.StartPrisma();
         const result = await this.prisma.user.create({data}); 
         this.DistroyPrisma();
-        // this.StaticticsUpdate({});
         return result;
     }
 

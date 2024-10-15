@@ -83,15 +83,18 @@ class ReportController extends BaseController {
 
         // const status = req.query.status;
         const date = req.query.date;
+        const month = req.query.month;
         const type = req.query.type;
         const category = req.query.category;
 
         const fitlerRender: string[] = [];
         const filter: Prisma.TransactionWhereInput[] = [];
 
+        let categoryResult;
+
         if(category && type) {
             const typeResult = await TypeModel.GetTypeById({ id:type })
-            const categoryResult = await CategoryModel.GetCategoryById({ id:category });
+            categoryResult = await CategoryModel.GetCategoryById({ id:category });
 
             filter.push({ AND:[{categoryId:category},{typeId:type}] });
             fitlerRender.push(`Tipo: ${typeResult?.name}`);
@@ -117,13 +120,33 @@ class ReportController extends BaseController {
             }
         }
 
+        if(date) filter.push({ date });
+        if(month) filter.push({ date:{contains:`-${month.length > 1 ? month : `0${month}`}-`} });
+
         const count = await TransactionModel.CountAllBy({ filter:{AND:filter} });
         let pagTake = 20;
         const headers = [``,`Descripción`, `Monto`, `Fecha`];
         const rows: string[][] = [];
 
         let i = 0;
+        let total = 0;
+        let totalIngr = 0;
+        let totalEgre = 0;
+
+        const test = await TransactionModel.GetAllSald();
+
+        const typeResults = await TypePromise;
+        const categoryResults = await CategoryPromise;
+
+        const currentFields: string[] = [];
+
+        test.forEach(item => {
+            const category = categoryResults.find(key => key.transactionCategoryId === item.categoryId);
+            currentFields.push(`${category?.name} ${item._sum.mount}`)
+        })
+
         do {
+
             const result = await TransactionModel.ReportTransaction({
                 filter: filter.length > 1 ? { AND:filter } : filter[0],
                 skip:pagTake-20,
@@ -131,9 +154,11 @@ class ReportController extends BaseController {
             });
 
             result.result.forEach((item,i)=>{
-                rows.push([i.toString(),`${item.description}`,`${item.mount}`,`${item.date}`]);
-            });            
+                total += item.mount;
 
+                rows.push([i.toString(),`${item.description}`,`${item.mount}`,`${item.date}`]);
+            });           
+            
             i++;
         } while (count>pagTake);    
 
@@ -142,7 +167,8 @@ class ReportController extends BaseController {
             rows,
             title:`Reporte`,
             filter: fitlerRender,
-            count
+            count,
+            current: currentFields
         });
 
         const result = await TransactionModel.ReportTransaction({
@@ -157,8 +183,8 @@ class ReportController extends BaseController {
             file: pdf,
             filter: fitlerRender,
             count,
-            type: await TypePromise,
-            category: await CategoryPromise,
+            type: typeResults,
+            category: categoryResults,
         });
     }
 

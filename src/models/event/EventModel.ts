@@ -38,7 +38,7 @@ class EventModel extends AbstractModel {
         return result;
     }
 
-    // crea usuario
+    // crea evento
     public async CreateEvent({data}:{data:EventCreate}) {
         this.StartPrisma();
         const result = await this.prisma.event.create({ 
@@ -49,7 +49,8 @@ class EventModel extends AbstractModel {
 
         }); 
         this.DistroyPrisma();
-        this.StaticticsUpdate({});
+        const month = result.event_datetime_date.split(`-`)[1];
+        await this.StaticticsUpdate({currentMonth:Number(month)});
         return result;
     }
 

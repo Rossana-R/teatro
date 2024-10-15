@@ -8,9 +8,9 @@ class StaticticsTransaction extends AbstractModel {
     }
 
     // crea
-    public async create({num,name}:{num: number,name:string}) {
+    public async create({num,name,currentMonth}:{currentMonth?:number,num: number,name:string}) {
         const year = this.getYear();
-        const month = this.getMonth();
+        const month = currentMonth ? currentMonth : this.getMonth();
         this.StartPrisma();
 
         const result = await this.prisma.staticticsObjectsYear.create({
@@ -38,10 +38,11 @@ class StaticticsTransaction extends AbstractModel {
     }
 
     // return statictics
-    public async conectOrCreate({name, num}:{name:string, num:number}) {
+    public async conectOrCreate({name, num,currentMonth}:{currentMonth?:number,name:string, num:number}) {
         const year = this.getYear();
 
         this.StartPrisma();
+        console.log(year, name, num);
         const result = await this.prisma.staticticsObjectsYear.findFirst({
             where: {
                 AND: [
@@ -50,15 +51,17 @@ class StaticticsTransaction extends AbstractModel {
                 ]
             }
         });
+        console.log(year);
+        console.log(result);
         this.DistroyPrisma();
 
         if(result) {
             const id = result.staticticsForYearId;
-            this.update({id,name,num});
+            this.update({id,name,num,currentMonth});
             return result;
         }
 
-        const create = await this.create({ name,num });
+        const create = await this.create({ name,num,currentMonth });
         return create;
     }
     
@@ -73,9 +76,9 @@ class StaticticsTransaction extends AbstractModel {
     }
  
     // incrementa
-    public async update({name, num,id}:{name:string, num:number,id:string}) {
+    public async update({name, num,id,currentMonth}:{currentMonth?:number,name:string, num:number,id:string}) {
         const year = this.getYear();
-        const month = this.getMonth();
+        const month = currentMonth ? currentMonth : this.getMonth();
         this.StartPrisma();
 
         const result = await this.prisma.staticticsObjectsYear.update({

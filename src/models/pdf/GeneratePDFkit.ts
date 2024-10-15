@@ -3,7 +3,7 @@ import PDFDocument from "pdfkit-table";
 import path from "path";
 import fs from "fs";
 
-export const pushPdf = async ({title,headers, rows,filter,count}:{title:string,headers:string[],rows:string[][],filter:string[],count:number}) => {
+export const pushPdf = async ({current,title,headers, rows,filter,count}:{current?:string[],title:string,headers:string[],rows:string[][],filter:string[],count:number}) => {
     const date = new Date();
     const ext = `pdf`;
     const datetime = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDay()}_${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
@@ -32,6 +32,7 @@ export const pushPdf = async ({title,headers, rows,filter,count}:{title:string,h
 
         doc.table(table, { title:`Reporte` });
 
+        if(current) current.forEach((item: any) => doc.text(item));
     })();
 
     console.log(path.join(`public/docs/report`, name));

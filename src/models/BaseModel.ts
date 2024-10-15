@@ -34,18 +34,19 @@ class AbstractModel {
         return result;
     }
 
-    async StaticticsUpdate({}:{}) {
+    async StaticticsUpdate({currentMonth}:{currentMonth?:number}) {
         this.StartPrisma();
         const date = new Date();
-        const month = date.getMonth()+1;
+        const month = currentMonth ? currentMonth : date.getMonth()+1;
         const year = date.getFullYear();
 
-        const result = await this.prisma.staticticsForYear.findFirst({ where:{
-            year
-        }});
+        const result = await this.prisma.staticticsForYear.findFirst({ where:{ year }});
+
+        console.log(result);
 
         if(!result) {
-            this.CreateStatictisForYear({ year });
+            await this.CreateStatictisForYear({ year });
+            console.log(year);
             return null;
         }
 
@@ -64,6 +65,7 @@ class AbstractModel {
             diciembre: result.diciembre
         };
 
+        console.log(month);
 
         if(month == 1) UpdateSet.enero += 1;
         else if(month == 2) UpdateSet.febrero += 1;

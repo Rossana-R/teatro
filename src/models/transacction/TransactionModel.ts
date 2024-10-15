@@ -82,6 +82,18 @@ class TransactionModel extends AbstractModel {
         this.DistroyPrisma();
         return {result, count};
     }
+
+    public async GetAllSald() {
+        this.StartPrisma();
+        const result = await this.prisma.transaction.groupBy({
+            by: "categoryId",
+            _sum: { mount:true },
+            _count: true
+        }) ;
+        this.DistroyPrisma();
+        return result;
+    }
+
 }
 
 export default TransactionModel;
