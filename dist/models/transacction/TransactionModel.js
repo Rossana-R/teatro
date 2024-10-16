@@ -93,13 +93,14 @@ class TransactionModel extends BaseModel_1.default {
             return { result, count };
         });
     }
-    GetAllSald() {
-        return __awaiter(this, void 0, void 0, function* () {
+    GetAllSald(_a) {
+        return __awaiter(this, arguments, void 0, function* ({ filter }) {
             this.StartPrisma();
             const result = yield this.prisma.transaction.groupBy({
                 by: "categoryId",
                 _sum: { mount: true },
-                _count: true
+                _count: true,
+                where: filter
             });
             this.DistroyPrisma();
             return result;

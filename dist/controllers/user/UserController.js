@@ -22,10 +22,19 @@ class UserController extends BaseController_1.default {
     DashboardController(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const transactionsCountPromise = TransactionModel.CountAllTransactions({});
+            const userCountPromise = UserModel_1.default.CountBy({ filter: {} });
+            const eventCountPromise = EventModel_1.default.CountBy({ filter: {} });
             const counts = yield EventModel_1.default.CountEventStatusAll();
             const transsactions = yield transactionsCountPromise;
+            const user = yield userCountPromise;
+            const event = yield eventCountPromise;
             return res.render(`s/dashboard.hbs`, {
-                transactionCount: transsactions,
+                cardsCount: [
+                    { label: `Usuarios`, path: `/user`, count: user },
+                    { label: `Transacciones`, path: `/transsaction`, count: transsactions },
+                    { label: `Eventos`, path: `/event/list`, count: event },
+                    // { label:`Usuarios`, path:`/user`, count: user },
+                ],
                 ubication: `Resumen`,
                 eventsStatus: counts
             });

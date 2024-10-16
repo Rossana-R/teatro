@@ -19,7 +19,7 @@ class AbstractModel {
         this.bcrypt = { compare: bcrypt_1.compare, hash: bcrypt_1.hash };
     }
     StartPrisma() {
-        this.prisma = new client_1.PrismaClient();
+        // this.prisma = new PrismaClient();
     }
     DistroyPrisma() {
         return __awaiter(this, void 0, void 0, function* () {

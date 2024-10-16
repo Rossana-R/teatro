@@ -83,12 +83,13 @@ class TransactionModel extends AbstractModel {
         return {result, count};
     }
 
-    public async GetAllSald() {
+    public async GetAllSald({filter}:{filter:Prisma.TransactionWhereInput}) {
         this.StartPrisma();
         const result = await this.prisma.transaction.groupBy({
             by: "categoryId",
             _sum: { mount:true },
-            _count: true
+            _count: true,
+            where: filter
         }) ;
         this.DistroyPrisma();
         return result;

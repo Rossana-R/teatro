@@ -12,12 +12,21 @@ class UserController extends BaseController {
 
     public async DashboardController (req: Request, res: Response) {
         const transactionsCountPromise = TransactionModel.CountAllTransactions({});
+        const userCountPromise = UserModel.CountBy({filter:{}});
+        const eventCountPromise = EventModel.CountBy({filter:{}});
         const counts = await EventModel.CountEventStatusAll();
 
         const transsactions = await transactionsCountPromise;
+        const user = await userCountPromise;
+        const event = await eventCountPromise;
 
         return res.render(`s/dashboard.hbs`, {
-            transactionCount: transsactions,
+            cardsCount: [
+                { label:`Usuarios`, path:`/user`, count: user },
+                { label:`Transacciones`, path:`/transsaction`, count: transsactions },
+                { label:`Eventos`, path:`/event/list`, count: event },
+                // { label:`Usuarios`, path:`/user`, count: user },
+            ],
             ubication: `Resumen`,
             eventsStatus: counts
         });

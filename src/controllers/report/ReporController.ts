@@ -77,15 +77,14 @@ class ReportController extends BaseController {
 
         const TypePromise = TypeModel.GetPaginationType({ pag:0,limit:50 });
         const CategoryPromise = CategoryModel.GetPaginationCategory({ pag:0,limit:50 });
-
-        const skip = req.query.skip ? Number(req.query.skip) : 0; 
-        const take = req.query.take ? Number(req.query.take) : 50; 
+        const yearsPromise = TypeModel.GetYears({});
 
         // const status = req.query.status;
         const date = req.query.date;
         const month = req.query.month;
         const type = req.query.type;
         const category = req.query.category;
+        const currentYear = req.query.currentYear;
 
         const fitlerRender: string[] = [];
         const filter: Prisma.TransactionWhereInput[] = [];
@@ -120,10 +119,13 @@ class ReportController extends BaseController {
             }
         }
 
-        if(date) filter.push({ date });
+        if(currentYear) filter.push({ date:{contains:`${currentYear}`} });
         if(month) filter.push({ date:{contains:`-${month.length > 1 ? month : `0${month}`}-`} });
 
-        const count = await TransactionModel.CountAllBy({ filter:{AND:filter} });
+        console.log(`${currentYear}`, filter.length);
+        console.log(filter);
+
+        const count = await TransactionModel.CountAllBy({ filter:filter.length > 1 ? {AND:filter} : filter[0] });
         let pagTake = 20;
         const headers = [``,`Descripción`, `Monto`, `Fecha`];
         const rows: string[][] = [];
@@ -133,10 +135,11 @@ class ReportController extends BaseController {
         let totalIngr = 0;
         let totalEgre = 0;
 
-        const test = await TransactionModel.GetAllSald();
+        const test = await TransactionModel.GetAllSald({ filter:filter.length > 1 ? {AND:filter} : filter[0] });
 
         const typeResults = await TypePromise;
         const categoryResults = await CategoryPromise;
+        const year = await yearsPromise;
 
         const currentFields: string[] = [];
 
@@ -146,9 +149,8 @@ class ReportController extends BaseController {
         })
 
         do {
-
             const result = await TransactionModel.ReportTransaction({
-                filter: filter.length > 1 ? { AND:filter } : filter[0],
+                filter: filter.length > 1 ? {AND:filter} : filter[0],
                 skip:pagTake-20,
                 take:pagTake
             });
@@ -171,20 +173,13 @@ class ReportController extends BaseController {
             current: currentFields
         });
 
-        const result = await TransactionModel.ReportTransaction({
-            filter: {
-                AND: filter
-            },
-            skip,
-            take,
-        });
-
         return res.render(`s/report/transaction.hbs`, {
             file: pdf,
             filter: fitlerRender,
             count,
             type: typeResults,
             category: categoryResults,
+            years: year
         });
     }
 

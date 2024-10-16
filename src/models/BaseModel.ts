@@ -13,7 +13,7 @@ class AbstractModel {
     }
 
     StartPrisma() {
-        this.prisma = new PrismaClient();
+        // this.prisma = new PrismaClient();
     }
 
     async DistroyPrisma() {

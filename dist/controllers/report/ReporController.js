@@ -80,13 +80,13 @@ class ReportController extends BaseController_1.default {
         return __awaiter(this, void 0, void 0, function* () {
             const TypePromise = TypeModel_1.default.GetPaginationType({ pag: 0, limit: 50 });
             const CategoryPromise = CategoryModel_1.default.GetPaginationCategory({ pag: 0, limit: 50 });
-            const skip = req.query.skip ? Number(req.query.skip) : 0;
-            const take = req.query.take ? Number(req.query.take) : 50;
+            const yearsPromise = TypeModel_1.default.GetYears({});
             // const status = req.query.status;
             const date = req.query.date;
             const month = req.query.month;
             const type = req.query.type;
             const category = req.query.category;
+            const currentYear = req.query.currentYear;
             const fitlerRender = [];
             const filter = [];
             let categoryResult;
@@ -115,11 +115,13 @@ class ReportController extends BaseController_1.default {
                     fitlerRender.push(`Categoria: TODOS`);
                 }
             }
-            if (date)
-                filter.push({ date });
+            if (currentYear)
+                filter.push({ date: { contains: `${currentYear}` } });
             if (month)
                 filter.push({ date: { contains: `-${month.length > 1 ? month : `0${month}`}-` } });
-            const count = yield TransactionModel.CountAllBy({ filter: { AND: filter } });
+            console.log(`${currentYear}`, filter.length);
+            console.log(filter);
+            const count = yield TransactionModel.CountAllBy({ filter: filter.length > 1 ? { AND: filter } : filter[0] });
             let pagTake = 20;
             const headers = [``, `Descripción`, `Monto`, `Fecha`];
             const rows = [];
@@ -127,9 +129,10 @@ class ReportController extends BaseController_1.default {
             let total = 0;
             let totalIngr = 0;
             let totalEgre = 0;
-            const test = yield TransactionModel.GetAllSald();
+            const test = yield TransactionModel.GetAllSald({ filter: filter.length > 1 ? { AND: filter } : filter[0] });
             const typeResults = yield TypePromise;
             const categoryResults = yield CategoryPromise;
+            const year = yield yearsPromise;
             const currentFields = [];
             test.forEach(item => {
                 const category = categoryResults.find(key => key.transactionCategoryId === item.categoryId);
@@ -155,19 +158,13 @@ class ReportController extends BaseController_1.default {
                 count,
                 current: currentFields
             });
-            const result = yield TransactionModel.ReportTransaction({
-                filter: {
-                    AND: filter
-                },
-                skip,
-                take,
-            });
             return res.render(`s/report/transaction.hbs`, {
                 file: pdf,
                 filter: fitlerRender,
                 count,
                 type: typeResults,
                 category: categoryResults,
+                years: year
             });
         });
     }

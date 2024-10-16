@@ -4,8 +4,13 @@
             <div class="card-body">
 
                 <label class="w-100">
-                    <span>Fecha</span>
-                    <input type="date" name="date" class="form-control w-full" />
+                    <span>Año</span>
+                    <select type="text" name="currentYear" class="form-control w-full">
+                        <option value="" selected>seleccione un mes</option>
+                        {{#each years}}
+                            <option>{{this.year}}</option>
+                        {{/each}}
+                    </select>
                 </label>
 
                 <label class="w-100">

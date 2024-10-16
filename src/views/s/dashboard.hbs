@@ -1,42 +1,18 @@
 <link href="/assets/css/dashboard/dash_1.css" rel="stylesheet" type="text/css" />
-{{!-- <link href="assets/css/dashboard/dash_2.css" rel="stylesheet" type="text/css" /> --}}
+
+<style>
+    .card-fleting {
+        flex: 1;
+        transition: all .4s ease-out;
+    }
+    .card-fleting:hover {
+        transform: translateY(-5px);
+        z-index: 100;
+    }
+</style>
 
 <div class="container">
     <div class="row layout-top-spacing">
-{{!-- 
-        <div class="col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
-            <div class="widget widget-account-invoice-one">
-
-                <div class="widget-heading">
-                    <h5 class="">Resumen: transacciones</h5>
-                </div>
-
-                <div class="widget-content">
-                    <div class="invoice-box">
-                    
-                        <div class="inv-detail">                                        
-                            <div class="info-detail-1">
-                                <p>total</p>
-                                <p>{{transactionCount}}</p>
-                            </div>
-                            <div class="info-detail-2">
-                                <p>ingreso</p>
-                                <p>{{ingresoCount}}</p>
-                            </div>
-                            <div class="info-detail-2">
-                                <p>egreso</p>
-                                <p>{{egresoCount}}</p>
-                            </div>
-                        </div>
-
-                        <div class="inv-action">
-                            <a href="/" class="btn btn-dark">Ver transacciones</a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div> --}}
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
             <div class="widget widget-table-one">
@@ -58,6 +34,21 @@
                         {{this}}
                     {{/Dashboard1}}
                 </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6 container">
+            <div class="d-flex flex-column">
+                {{#each cardsCount}}
+                    <div class="layout-spacing card-fleting">
+                        <div class="card">
+                            <div class="card-body d-flex align-items-center justify-content-between">
+                                <span class="card-title text-sm h6" style="font-weight: 900">{{this.label}}</span>
+                                <a href="{{this.path}}" class="h6 px-3 py-1 btn btn-primary">{{this.count}}</a>
+                            </div>
+                        </div>
+                    </div>
+                {{/each}}
             </div>
         </div>
 
