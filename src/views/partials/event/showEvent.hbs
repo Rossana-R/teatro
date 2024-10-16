@@ -1,13 +1,13 @@
 
-<button class="btn btn-danger" id="DownloadPDF">
-    <i class="bi bi-pdf">Descardar pdf</i>
-</button>
 
 <div class="container" id="elementHTML">
     <div class="row">
+        <button class="col-6 btn btn-primary" id="btnToShared">Compartir</button>
+        <button class="col-6 btn btn-danger" id="DownloadPDF"><i class="bi bi-file-pdf"> Descardar pdf</i></button>
+    </div>
+    <div class="row">
         <div class="col-12 card mx-auto">
             <input type="hidden" id="idToShared" value="{{data.eventId}}" />
-            <button class="btn btn-primary" id="btnToShared">Compartir</button>
             <div class="card-body">
                 <h4 class="">Fecha y hora:</h4>
                 <table class="tablePDF table table-sm table-striped">
