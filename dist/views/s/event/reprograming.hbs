@@ -1,0 +1,117 @@
+
+<div class="row">
+    <div class="col-10">.</div>
+    <div class="col-2">
+        <a href="/events" class="bg-primary px-3 py-1 rounded">
+            <i class="bi bi-box-arrow-left"></i>
+            volver
+        </a>
+    </div>
+
+    <div id="basic" class="col-12 mx-auto layout-spacing mt-3">
+        <div class="statbox widget box box-shadow">
+            <div class="widget-header">
+                <div class="row">
+                    <div class="col-12">
+                        <h4>Actualizar Evento</h4>
+                    </div>                 
+                </div>
+            </div>
+            <div class="widget-content widget-content-area">
+
+                <form class="container-fluid" method="post" action="/event/{{data.eventId}}/reprograming">
+                    {{!-- dates --}}
+
+                    <div class="row">
+                        <div class="form-group col-12 col-md-6 col-lg-4">
+                            <label for="t-evname" class="">Fecha y hora de inicio</label>
+                            <input id="t-evname" type="datetime-local" value="{{data.admin_datetime_start}}" name="event_datetime_time_start" class="form-control" required>
+                        </div>
+                        <div class="form-group col-12 col-md-6 col-lg-4">
+                            <label for="t-evname" class="">Fecha y hora de cierre</label>
+                            <input id="t-evname" type="datetime-local" value="{{data.admin_datetime_end}}" name="event_datetime_time_end" class="form-control" required>
+                        </div>
+                    </div>
+
+                    {{!-- fullname, ci, phone, address, email --}}
+                    <div class="row mt-5">
+                        <div class="form-group col-12 col-md-6 col-lg-4">
+                            <label for="t-fullname" class="">Nombre Completo del responsable</label>
+                            <input id="t-fullname" disabled type="text" name="fullname" value="{{data.fullname}}" class="form-control" required>
+                        </div>  
+                        <div class="form-group col-12 col-md-6 col-lg-4">
+                            <label for="t-ci" class="">Cédula de identidad</label>
+                            <input id="t-ci" disabled type="text" name="ci" value="{{data.ci}}" class="form-control" required>
+                        </div>  
+                        <div class="form-group col-12 col-md-6 col-lg-4">
+                            <label for="t-email" class="">Correo electrónico</label>
+                            <input id="t-email" disabled type="email" name="email" value="{{data.email}}" class="form-control" required>
+                        </div>  
+                        <div class="form-group col-12 col-md-6 col-lg-4">
+                            <label for="t-phone" class="">Número de teléfono</label>
+                            <input id="t-phone" disabled type="text" name="phone" value="{{data.phone}}" class="form-control" required>
+                        </div>  
+                        <div class="form-group col-12 col-md-6 col-lg-4">
+                            <label for="t-address" class="">Dirección</label>
+                            <input id="t-address" disabled type="text" name="address" value="{{data.address}}" class="form-control" required>
+                        </div> 
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="form-group col-12 col-md-6 col-lg-4">
+                            <label for="t-evname" class="">Nombre del evento</label>
+                            <input id="t-evname" disabled type="text" name="event_name" value="{{data.event_name}}" class="form-control" required>
+                        </div>  
+                        <div class="form-group col-12 col-md-6 col-lg-4">
+                            <label for="t-quantity-people" class="">Cantidad de personas</label>
+                            <input id="t-quantity-people" disabled type="text" name="event_quantity_people" value="{{data.event_quantity_people}}" class="form-control" required>
+                        </div>  
+                        
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <label for="id-evtcharacter" class="text-md text-gray-700">Caracter:</label>
+                            <select id="id-evtcharacter" disabled name="event_character" value="{{data.event_character}}" class="form-control basic">
+                                <option selected value="PUBLICO">selecciona una opcion</option>
+                                <option value="APOYO">Apoyo</option>
+                                <option value="PRIVADO">Privado</option>
+                                <option value="ARANCEL">Arancel</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <label for="id-evtype" class="">Tipo de evento:</label>
+                            <select id="id-evtype" disabled name="event_type" value="{{data.event_type}}" class="form-control basic">
+                                <option selected value="PUBLICO">selecciona una opcion</option>
+                                <option value="PUBLICO">Público</option>
+                                <option value="PRIVADO">Privado</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-12 col-md-6 col-lg-4">
+                            <label for="t-evname" class="">Entra paga? ({{data.event_intro}})</label>
+                            <input id="t-evname" disabled type="checkbox" name="event_intro" value="{{data.event_intro}}" class="form-control">
+                        </div>  
+                        <div class="form-group col-12 col-md-6 col-lg-4">
+                            <label for="t-cost" class="">Costo de la entrada</label>
+                            <input id="t-cost" disabled type="number" name="event_cost" value="{{data.event_cost}}" value="0" class="form-control" required>
+                        </div>   
+                    </div> 
+
+                    <div class="row">
+                        {{#activeArea data.room "Sala" "room"}}
+                            {{this}}
+                        {{/activeArea}}
+                        {{#activeArea data.coffe_bar "Cafe/Bar" "coffe_bar"}}
+                            {{this}}
+                        {{/activeArea}}
+                        {{#activeArea data.vip "V.I.P" "vip"}}
+                            {{this}}
+                        {{/activeArea}}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Registrar Evento</button>                                                
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,150 @@
+
+<button class="btn btn-danger" id="DownloadPDF">
+    <i class="bi bi-pdf">Descardar pdf</i>
+</button>
+
+<div class="container" id="elementHTML">
+    <div class="row">
+        <div class="col-12 card mx-auto">
+            <input type="hidden" id="idToShared" value="{{data.eventId}}" />
+            <button class="btn btn-primary" id="btnToShared">Compartir</button>
+            <div class="card-body">
+                <h4 class="">Fecha y hora:</h4>
+                <table class="tablePDF table table-sm table-striped">
+                    <tbody>
+                        <tr>
+                            <td>Inicio</td>
+                            <td>{{data.admin_datetime_start}}</td>
+                        </tr>
+                        <tr>
+                            <td>Salida</td>
+                            <td>{{data.admin_datetime_end}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 class="mt-5">Datos responsable:</h4>
+                <table class="tablePDF table table-sm table-striped">
+                    <tbody>
+                        <tr>
+                            <td>ID</td>
+                            <td>{{data._id}}</td>
+                        </tr>
+                        <tr>
+                            <td>Nombre completo</td>
+                            <td>{{data.fullname}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cédula</td>
+                            <td>{{data.ci}}</td>
+                        </tr>
+                        <tr>
+                            <td>Correo</td>
+                            <td>{{data.email}}</td>
+                        </tr>
+                        <tr>
+                            <td>Teléfono</td>
+                            <td>{{data.phone}}</td>
+                        </tr>
+                        <tr>
+                            <td>Dirección</td>
+                            <td>{{data.address}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 class="mt-5">Datos evento:</h4>
+                <table class="tablePDF table table-sm table-striped">
+                    <tbody>
+                        <tr>
+                            <td>Nombre</td>
+                            <td>{{data.event_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Caracter</td>
+                            <td>{{data.event_character}}</td>
+                        </tr>
+                        <tr>
+                            <td>Tipo</td>
+                            <td>{{data.event_type}}</td>
+                        </tr>
+                        <tr>
+                            <td>Entrada paga</td>
+                            <td>{{data.event_intro}}</td>
+                        </tr>
+                        <tr>
+                            <td>Costo <span class="text-muted">(en caso de tenerlo)</span></td>
+                            <td>{{data.event_cost}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cantidad de personas</td>
+                            <td>{{data.event_quantity_people}}</td>
+                        </tr>
+                        <tr>
+                            <td>Tipo de pago</td>
+                            <td>{{data.event_character}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 class="mt-5">Datos administración:</h4>
+                <table class="tablePDF table table-sm table-striped">
+                    <tbody>
+                        <tr>
+                            <td>Codigo de reservación</td>
+                            <td>{{data.admin_code}}</td>
+                        </tr>
+                        <tr>
+                            <td>Estado</td>
+                            <td>{{data.admin_status}}</td>
+                        </tr>
+                        <tr>
+                            <td>Fecha</td>
+                            <td>{{data.event_datetime_date}}</td>
+                        </tr>
+                        <tr>
+                            <td>Observación</td>
+                            <td>{{data.admin_observation}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const doc = document.getElementById(`idToShared`).value;
+    const DownloadPDF = document.getElementById(`DownloadPDF`);
+
+    DownloadPDF.addEventListener(`click`, () => exceuteReport());
+
+    const exceuteReport = async () => {
+        const id = doc;
+
+        fetch(`/api/report/event/${id}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);  
+                window.open(`${data.file}`);
+            })
+            .catch(err => console.error(err))
+            ;
+
+    }
+
+    const element = document.getElementById(`btnToShared`);
+    element.addEventListener(`click`, async () => {
+        const test = window.location.host //.hostname;
+        await navigator.clipboard.writeText(`${test}/public/event/${doc}`);
+        element.textContent = `Copiado`; 
+    })
+
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+
+</script>
+
+

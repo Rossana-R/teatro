@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="row">
+        <form action="/report/event" method="GET" class="col-12 card">
+            <div class="card-body">
+
+                <div class="container">
+                    <div class="row" >
+                        <label class="col-6">
+                            <span>Mes</span>
+                            <select type="text" name="month" class="form-control w-full">
+                                <option value="" selected>seleccione un mes</option>
+                                <option value="01">Enero</option>
+                                <option value="02">Febrero</option>
+                                <option value="03">Marzo</option>
+                                <option value="04">Abril</option>
+                                <option value="05">Mayo</option>
+                                <option value="06">Junio</option>
+                                <option value="07">Julio</option>
+                                <option value="08">Agosto</option>
+                                <option value="09">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
+                            </select>
+                        </label>
+                        <label class="col-6">
+                            <span>Año</span>
+                            <select type="text" name="year" class="form-control w-full">
+                                <option value="" selected>seleccione un año</option>
+                                <option value="2024">2024</option>
+                            </select>
+                        </label>
+                    
+                
+                        <label class="col-12">
+                            <span>Estado</span>
+                            <select type="text" name="status" class="form-control w-full">
+                                <option value="" selected>seleccione un estado</option>
+                                <option value="RECIBIDO">RECIBIDO</option>
+                                <option value="APROBADO">APROBADO</option>
+                                <option value="CANCELADO">CANCELADO</option>
+                                <option value="TERMINADO">TERMINADO</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <input type="submit" value="Generar Reporte" class="btn btn-primary" />
+                </div>
+            </div>            
+        </form>
+    </div>
+
+
+{{#if file}}
+    <h4 class="mt-4">Filtros</h4>
+    <ul>
+        <li>Resutlados: {{count}}</li>
+        {{#each filter}}
+            <li>{{this}}</li>
+        {{/each}}
+    </ul>
+    <div class="row mt-3">
+        <a href="{{file.download}}" target="_blank" class="btn btn-danger">Descargar reporte</a>
+    </div>
+{{/if}}
+
+</div>

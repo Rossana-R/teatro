@@ -1,0 +1,54 @@
+<link href="/assets/css/dashboard/dash_1.css" rel="stylesheet" type="text/css" />
+{{!-- <link href="assets/css/dashboard/dash_2.css" rel="stylesheet" type="text/css" /> --}}
+
+<div class="container">
+    <h2>{{user.name}} {{user.lastname}}</h2>
+
+    <div class="row">
+        <div class="card col-12 col-lg-6">
+            <form action="/profile/update/data" method="post" class="card-body">
+                <h5>Actualizar datos</h5>
+                <label class="w-100">
+                    <span>Nombre</span>
+                    <input type="text" name="name" value="{{user.name}}" class="form-control w-full" />
+                </label>
+                <label class="w-100">
+                    <span>Apellido</span>
+                    <input type="text" name="lastname" value="{{user.lastname}}" class="form-control w-full" />
+                </label>
+                <label class="w-100">
+                    <span>Usuario</span>
+                    <input type="text" name="username" value="{{user.username}}" class="form-control w-full" />
+                </label>
+                <label class="w-100">
+                    <span>Correo</span>
+                    <input type="email" name="email" value="{{user.email}}" class="form-control w-full" />
+                </label>
+                <button type="submit" class="btn btn-primary">
+                    actualizar
+                </button>
+            </form>
+        </div>
+        <div class="card col-12 col-lg-6">
+            <form action="/profile/update/password" method="post" class="card-body">
+                <h5>Actualizar contraseña</h5>
+                <label class="w-100">
+                    <span>Contraseña actual</span>
+                    <input type="text" name="old" class="form-control w-full" />
+                </label>
+                <label class="w-100">
+                    <span>Nueva contraseña</span>
+                    <input type="text" name="newp" class="form-control w-full" />
+                </label>
+                <label class="w-100">
+                    <span>Repetir contraseña</span>
+                    <input type="text" name="repeat" class="form-control w-full" />
+                </label>
+                <button type="submit" class="btn btn-primary">
+                    actualizar
+                </button>
+            </form>
+        </div>
+    </div>
+
+</div>
