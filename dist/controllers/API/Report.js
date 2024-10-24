@@ -21,7 +21,6 @@ class ReportController extends BaseController_1.default {
     ReportForEvent(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.params.id;
-            console.log(id);
             const evt = yield EventModel_1.default.FindEventById({ id });
             if (!evt)
                 return res.status(400);

@@ -9,7 +9,6 @@ class ReportController extends BaseController {
     
     public async ReportForEvent(req:Request, res:Response) {
         const id = req.params.id;
-        console.log(id);
 
         const evt = await EventModel.FindEventById({ id });
         if(!evt) return res.status(400);

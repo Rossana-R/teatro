@@ -84,17 +84,13 @@ class TransactionController extends BaseController {
             await TransactionModel.Create({data});
 
             const category = await categoryPromise;
-            console.log(date)
-            console.log(date.split(`-`)[1]);
             const month = date.split(`-`)[1];
-            console.log(month);
             await StaticticsTransaction.conectOrCreate({ name:`${category?.name}`,num:data.mount,currentMonth:Number(month) });
 
             req.flash(`succ`, `Creado exitoso.`);
             return res.redirect(`/transaction`);
 
         } catch (error) {
-            console.log(error);
             req.flash(`error`, `Error al crear.`)
             return res.redirect(`/transaction`);
         }

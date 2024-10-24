@@ -84,16 +84,12 @@ class TransactionController extends BaseController_1.default {
                 };
                 yield TransactionModel.Create({ data });
                 const category = yield categoryPromise;
-                console.log(date);
-                console.log(date.split(`-`)[1]);
                 const month = date.split(`-`)[1];
-                console.log(month);
                 yield StaticticsTransaction_1.default.conectOrCreate({ name: `${category === null || category === void 0 ? void 0 : category.name}`, num: data.mount, currentMonth: Number(month) });
                 req.flash(`succ`, `Creado exitoso.`);
                 return res.redirect(`/transaction`);
             }
             catch (error) {
-                console.log(error);
                 req.flash(`error`, `Error al crear.`);
                 return res.redirect(`/transaction`);
             }

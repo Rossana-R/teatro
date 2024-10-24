@@ -16,14 +16,14 @@ class UserController extends BaseController {
         const eventCountPromise = EventModel.CountBy({filter:{}});
         const counts = await EventModel.CountEventStatusAll();
 
-        const transsactions = await transactionsCountPromise;
+        const transactions = await transactionsCountPromise;
         const user = await userCountPromise;
         const event = await eventCountPromise;
 
         return res.render(`s/dashboard.hbs`, {
             cardsCount: [
                 { label:`Usuarios`, path:`/user`, count: user },
-                { label:`Transacciones`, path:`/transsaction`, count: transsactions },
+                { label:`Transacciones`, path:`/transaction`, count: transactions },
                 { label:`Eventos`, path:`/event/list`, count: event },
                 // { label:`Usuarios`, path:`/user`, count: user },
             ],
@@ -104,7 +104,6 @@ class UserController extends BaseController {
     // render profile
     public async RenderProfile(req: Request, res: Response) {
         const user = req.user;
-        console.log(user);
 
         return res.render(`s/profile.hbs`)
     }
@@ -127,7 +126,6 @@ class UserController extends BaseController {
             return res.redirect(`/user/list`);
 
         } catch (error) {
-            console.log(error);
             req.flash(`err`, `No se pudo crear el usuario.`);
             return res.redirect(`/user/list`);
         }

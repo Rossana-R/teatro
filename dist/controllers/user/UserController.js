@@ -25,13 +25,13 @@ class UserController extends BaseController_1.default {
             const userCountPromise = UserModel_1.default.CountBy({ filter: {} });
             const eventCountPromise = EventModel_1.default.CountBy({ filter: {} });
             const counts = yield EventModel_1.default.CountEventStatusAll();
-            const transsactions = yield transactionsCountPromise;
+            const transactions = yield transactionsCountPromise;
             const user = yield userCountPromise;
             const event = yield eventCountPromise;
             return res.render(`s/dashboard.hbs`, {
                 cardsCount: [
                     { label: `Usuarios`, path: `/user`, count: user },
-                    { label: `Transacciones`, path: `/transsaction`, count: transsactions },
+                    { label: `Transacciones`, path: `/transaction`, count: transactions },
                     { label: `Eventos`, path: `/event/list`, count: event },
                     // { label:`Usuarios`, path:`/user`, count: user },
                 ],
@@ -105,7 +105,6 @@ class UserController extends BaseController_1.default {
     RenderProfile(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = req.user;
-            console.log(user);
             return res.render(`s/profile.hbs`);
         });
     }
@@ -127,7 +126,6 @@ class UserController extends BaseController_1.default {
                 return res.redirect(`/user/list`);
             }
             catch (error) {
-                console.log(error);
                 req.flash(`err`, `No se pudo crear el usuario.`);
                 return res.redirect(`/user/list`);
             }

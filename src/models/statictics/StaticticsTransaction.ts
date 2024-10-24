@@ -42,7 +42,6 @@ class StaticticsTransaction extends AbstractModel {
         const year = this.getYear();
 
         this.StartPrisma();
-        console.log(year, name, num);
         const result = await this.prisma.staticticsObjectsYear.findFirst({
             where: {
                 AND: [
@@ -51,8 +50,6 @@ class StaticticsTransaction extends AbstractModel {
                 ]
             }
         });
-        console.log(year);
-        console.log(result);
         this.DistroyPrisma();
 
         if(result) {

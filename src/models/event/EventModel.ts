@@ -27,7 +27,6 @@ class EventModel extends AbstractModel {
             this.DistroyPrisma();
             return result;
         } catch (error) {
-            console.log(error);
             return [];
         }
 

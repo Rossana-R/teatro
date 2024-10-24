@@ -14,8 +14,6 @@ export const pushPdf = async ({current,title,headers, rows,filter,count}:{curren
     const createPath = path.join(process.cwd(), `/public/docs/report`, name);
     // doc.text('Reporte', 0, 0);
 
-    console.log(createPath);
-
     // return   {path:createPath,download:downlaodPath};
     doc.text(`Teatro Simón Bolivar - Reporte ${datetime}`);
 
@@ -35,7 +33,6 @@ export const pushPdf = async ({current,title,headers, rows,filter,count}:{curren
         if(current) current.forEach((item: any) => doc.text(item));
     })();
 
-    console.log(path.join(`public/docs/report`, name));
     doc.pipe(fs.createWriteStream(path.join(`public/docs/report/reporte.pdf`)));
     doc.end();
 

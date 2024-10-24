@@ -27,7 +27,6 @@ const pushPdf = (_a) => __awaiter(void 0, [_a], void 0, function* ({ current, ti
     const downlaodPath = `/docs/report/${name}`;
     const createPath = path_1.default.join(process.cwd(), `/public/docs/report`, name);
     // doc.text('Reporte', 0, 0);
-    console.log(createPath);
     // return   {path:createPath,download:downlaodPath};
     doc.text(`Teatro Simón Bolivar - Reporte ${datetime}`);
     (function () {
@@ -46,7 +45,6 @@ const pushPdf = (_a) => __awaiter(void 0, [_a], void 0, function* ({ current, ti
                 current.forEach((item) => doc.text(item));
         });
     })();
-    console.log(path_1.default.join(`public/docs/report`, name));
     doc.pipe(fs_1.default.createWriteStream(path_1.default.join(`public/docs/report/reporte.pdf`)));
     doc.end();
     return { path: createPath, download: downlaodPath };

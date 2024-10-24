@@ -122,9 +122,6 @@ class ReportController extends BaseController {
         if(currentYear) filter.push({ date:{contains:`${currentYear}`} });
         if(month) filter.push({ date:{contains:`-${month.length > 1 ? month : `0${month}`}-`} });
 
-        console.log(`${currentYear}`, filter.length);
-        console.log(filter);
-
         const count = await TransactionModel.CountAllBy({ filter:filter.length > 1 ? {AND:filter} : filter[0] });
         let pagTake = 20;
         const headers = [``,`Descripción`, `Monto`, `Fecha`];

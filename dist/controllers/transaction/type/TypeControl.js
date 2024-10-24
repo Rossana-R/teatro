@@ -25,7 +25,6 @@ class TypeController extends BaseController_1.default {
             const limit = req.query.limit | 10;
             const type = TypeModel_1.default.GetPaginationType({ pag, limit });
             const countPromise = TypeModel_1.default.CountAll();
-            console.log(yield type);
             const Params = {
                 list: yield type,
                 next: `/transaction/type/?pag=${pag + 1}`,
@@ -73,7 +72,6 @@ class TypeController extends BaseController_1.default {
                 return res.redirect(`/transaction/type`);
             }
             catch (error) {
-                console.log(error);
                 req.flash(`error`, `Error al crear.`);
                 return res.redirect(`/transaction/type`);
             }
@@ -93,7 +91,6 @@ class TypeController extends BaseController_1.default {
                 return res.redirect(`/transaction/type`);
             }
             catch (error) {
-                console.log(error);
                 req.flash(`error`, `Error al crear.`);
                 return res.redirect(`/transaction/type`);
             }

@@ -67,7 +67,6 @@ class CategoryController extends BaseController {
             return res.redirect(`/transaction/category`);
 
         } catch (error) {
-            console.log(error);
             req.flash(`error`, `Error al crear.`)
             return res.redirect(`/transaction/category`);
         }
@@ -88,7 +87,6 @@ class CategoryController extends BaseController {
             return res.redirect(`/transaction/category`);
 
         } catch (error) {
-            console.log(error);
             req.flash(`error`, `Error al crear.`)
             return res.redirect(`/transaction/category`);
         }

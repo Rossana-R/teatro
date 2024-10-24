@@ -3,7 +3,7 @@
 <div class="container" id="elementHTML">
     <div class="row">
         <button class="col-6 btn btn-primary" id="btnToShared">Compartir</button>
-        <button class="col-6 btn btn-danger" id="DownloadPDF"><i class="bi bi-file-pdf"> Descardar pdf</i></button>
+        <button class="col-6 btn btn-danger" id="DownloadPDF">Descardar pdf</i></button>
     </div>
     <div class="row">
         <div class="col-12 card mx-auto">
@@ -125,7 +125,6 @@
         fetch(`/api/report/event/${id}`)
             .then(res => res.json())
             .then(data => {
-                console.log(data);  
                 window.open(`${data.file}`);
             })
             .catch(err => console.error(err))

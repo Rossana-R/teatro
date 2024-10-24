@@ -42,11 +42,8 @@ class AbstractModel {
 
         const result = await this.prisma.staticticsForYear.findFirst({ where:{ year }});
 
-        console.log(result);
-
         if(!result) {
             await this.CreateStatictisForYear({ year });
-            console.log(year);
             return null;
         }
 
@@ -65,7 +62,6 @@ class AbstractModel {
             diciembre: result.diciembre
         };
 
-        console.log(month);
 
         if(month == 1) UpdateSet.enero += 1;
         else if(month == 2) UpdateSet.febrero += 1;

@@ -50,7 +50,6 @@ class StaticticsTransaction extends BaseModel_1.default {
         return __awaiter(this, arguments, void 0, function* ({ name, num, currentMonth }) {
             const year = this.getYear();
             this.StartPrisma();
-            console.log(year, name, num);
             const result = yield this.prisma.staticticsObjectsYear.findFirst({
                 where: {
                     AND: [
@@ -59,8 +58,6 @@ class StaticticsTransaction extends BaseModel_1.default {
                     ]
                 }
             });
-            console.log(year);
-            console.log(result);
             this.DistroyPrisma();
             if (result) {
                 const id = result.staticticsForYearId;

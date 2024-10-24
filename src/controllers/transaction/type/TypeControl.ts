@@ -18,8 +18,6 @@ class TypeController extends BaseController {
         const type = TypeModel.GetPaginationType({pag, limit});
         const countPromise = TypeModel.CountAll();
 
-        console.log(await type);
-
         const Params = {
             list: await type,
             next: `/transaction/type/?pag=${pag+1}`,
@@ -69,7 +67,6 @@ class TypeController extends BaseController {
             return res.redirect(`/transaction/type`);
 
         } catch (error) {
-            console.log(error);
             req.flash(`error`, `Error al crear.`)
             return res.redirect(`/transaction/type`);
         }
@@ -90,7 +87,6 @@ class TypeController extends BaseController {
             return res.redirect(`/transaction/type`);
 
         } catch (error) {
-            console.log(error);
             req.flash(`error`, `Error al crear.`)
             return res.redirect(`/transaction/type`);
         }

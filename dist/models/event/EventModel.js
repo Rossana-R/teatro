@@ -38,7 +38,6 @@ class EventModel extends BaseModel_1.default {
                 return result;
             }
             catch (error) {
-                console.log(error);
                 return [];
             }
         });
