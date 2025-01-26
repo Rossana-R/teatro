@@ -27,11 +27,11 @@ passport_1.default.use("local.login", new passport_local_1.Strategy({
             return done(null, user);
         }
         else {
-            return done(null, false, { message: "Verifica tus credenciales. p" });
+            return done(null, false, { message: "Verifica tus credenciales." });
         }
     }
     else {
-        return done(null, false, { message: "Verifica tus credenciales. e" });
+        return done(null, false, { message: "Verifica tus credenciales." });
     }
 })));
 passport_1.default.serializeUser((user, done) => {
